@@ -140,20 +140,12 @@ sw_categories:
       readable_title: PyTorch
       tests_and_status:
       - ubuntu:latest: passed
-    ros2:
-      readable_title: ROS2
-      tests_and_status:
-      - ubuntu:latest: passed
     rust:
       readable_title: Rust for Linux Applications
       tests_and_status: []
     rust_embedded:
       readable_title: Rust for Embedded Applications
       tests_and_status: []
-    ros2:
-      readable_title: ROS2
-      tests_and_status:
-      - ubuntu:latest: passed
     ssh:
       readable_title: SSH
       tests_and_status: []
