@@ -563,6 +563,27 @@ function attachPageFindSearchTracker() {
             }
         }
         //
+        //  Challenge list page
+        //  ===================
+        else if ( (depth_of_path == 2) & (current_path.includes('/challenges/')) ) {
+            let search_box = document.getElementById('search-box');
+            search_box.addEventListener('blur', () => {
+                trackSearchInteraction();
+            });
+
+            let challenge_cards = document.querySelectorAll('.challenge-card');
+            for (let card of challenge_cards) {
+                card.addEventListener("click", () => {
+                    let card_title = card.querySelector('.search-title').innerHTML;
+                    _satellite.track('content-interaction', {
+                        'data-track-type'     : 'Challenge result card',
+                        'data-track-location' : 'list-card',
+                        'data-track-name'     : card_title
+                    });
+                });
+            }
+        }
+        //
         //  Install Guide page
         //  ===================
         else if ( ( (depth_of_path == 3) | (depth_of_path == 4) ) & (current_path.includes('/install-guides/')) ) {
@@ -620,6 +641,23 @@ function attachPageFindSearchTracker() {
                 });
             }
         } 
+        else if ( ( (depth_of_path == 3) | (depth_of_path == 4) ) & (current_path.includes('/challenges/')) ) {
+            if (document.getElementById('reading-time')) {
+                let challenge_title = document.getElementById('challenge-title').innerText;
+                let challenge_reading_time = document.getElementById('reading-time').innerText.trim();
+                let challenge_last_updated = document.getElementById('last-updated').innerText.trim();
+                let challenge_author = document.getElementById('author').innerText.trim();
+
+                digitalData.challenge = {
+                    pageInfo: {
+                        challengeName: challenge_title,
+                        readingTime: challenge_reading_time,
+                        author: challenge_author,
+                        lastUpdated: challenge_last_updated
+                    }
+                };
+            }
+        }
     }
 });
 

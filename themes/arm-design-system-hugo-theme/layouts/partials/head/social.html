@@ -6,7 +6,7 @@ Where it is used:
 */}}
 
 <!-- Change displayed metadata if content page or other (homepage/list) -->
-{{$is_content := or (eq .Layout "learningpathall") (eq .Layout "installtoolsall")}}
+{{$is_content := or (eq .Layout "learningpathall") (eq .Layout "installtoolsall") (eq .Layout "challengeall")}}
 
 <!-- If IsPage (meaning a non _index.md content page), access the _index.md's metadata to fill out social media info -->
 {{$is_subpage := .IsPage }}
@@ -33,6 +33,16 @@ Where it is used:
                 {{$desc   = printf "Get up and running quickly with the most common tool settings with code snippets, using this %s installation guide." ($.Site.GetPage (path.Dir (path.Dir .RelPermalink))).Title}}
                 {{$author = ($.Site.GetPage (path.Dir (path.Dir .RelPermalink))).Params.author}}
             {{end}}
+        {{else if eq .Layout "challengeall"}}
+            {{ if eq .Parent.Title "Challenges"}}
+                {{$title  = printf "%s: Challenge" .Title }}
+                {{$desc   = printf "Explore this Arm development challenge and build a practical solution around %s." .Title}}
+                {{$author = .Params.author}}
+            {{else}}
+                {{$title  = printf "%s: Challenge" .Title }}
+                {{$desc   = printf "Explore this Arm development challenge and build a practical solution around %s." ($.Site.GetPage (path.Dir (path.Dir .RelPermalink))).Title}}
+                {{$author = ($.Site.GetPage (path.Dir (path.Dir .RelPermalink))).Params.author}}
+            {{end}}
         {{else}}
             <!-- Learning path subpages -->
             {{$title  = printf "%s: %s" ($.Site.GetPage (path.Dir (path.Dir .RelPermalink))).Title .Title}}
@@ -44,6 +54,10 @@ Where it is used:
             <!-- Install guide _index.md page -->
             {{$title  = printf "%s: Install Guide" .Title}}
             {{$desc   = printf "Get up and running quickly with the most common tool settings with code snippets, using this %s installation guide." .Title}}
+            {{$author = .Params.author}}
+        {{else if eq .Layout "challengeall"}}
+            {{$title  = printf "%s: Challenge" .Title}}
+            {{$desc   = printf "Explore this Arm development challenge and build a practical solution around %s." .Title}}
             {{$author = .Params.author}}
         {{else}}
             <!-- Learning path _index.md page -->

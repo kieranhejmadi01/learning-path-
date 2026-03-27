@@ -18,6 +18,7 @@ Called from:
 {{$website_url := ""}}
 
 {{$is_learning_path := false}}
+{{$is_challenge := false}}
 {{$table_name := "Install Guide"}}
 
 <!-- Trial new IG title structure for SEO optimization -->
@@ -32,6 +33,9 @@ Called from:
 {{if eq .Section "learning-paths"}}
     {{$is_learning_path = true}}
     {{$table_name = "Learning Path"}}
+{{else if eq .Section "challenges"}}
+    {{$is_challenge = true}}
+    {{$table_name = "Challenge"}}
 {{end}}
 
 
@@ -469,8 +473,10 @@ Called from:
 
             </div>
         </div>
-        {{if not $is_learning_path}}
+        {{if and (not $is_learning_path) (not $is_challenge)}}
             <p style="margin-top: 24px;">This guide shows you how to install and use the tool with the most common configuration. For advanced options and complete reference information, see the official documentation. Some install guides also include optional next steps to help you explore related workflows or integrations.</p>
+        {{else if $is_challenge}}
+            <p style="margin-top: 24px;">This challenge outlines an open-ended Arm development problem and gives you a starting point for building your own solution. Use the resources and deliverables as guidance, then adapt the implementation to your goals.</p>
         {{end}}
     </div>
 </div>

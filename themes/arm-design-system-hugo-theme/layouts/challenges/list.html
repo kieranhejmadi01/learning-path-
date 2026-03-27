@@ -1,0 +1,48 @@
+{{/*
+A list page that shows all challenge pages.
+
+Where it is used:
+    - /challenges/
+*/}}
+
+{{define "main"}}
+
+{{ $challenges_to_list := where .Site.Pages "Params.challenge" true}}
+
+<p class="u-margin-top-1 u-margin-left-1 u-margin-bottom-1/2 u-font-size-90%">
+    Explore open-ended projects for Arm developers. Try these search terms:
+    {{- range $i, $e := .Params.additional_search_terms -}}
+        {{- if $i -}}
+            ,
+        {{- end -}}
+        &nbsp;<a class="common-search-term-link" href='/challenges/?search={{$e}}'>{{$e}}</a>
+    {{- end -}}
+    .
+</p>
+
+<ads-search class="u-margin-top-0 challenges" has-search-button id="search-box" placeholder="Search challenges"></ads-search>
+
+{{ partial "filter-search-sort/active-filter-and-sort-bar.html" (dict "content_to_list" $challenges_to_list "page_type" "tools")}}
+
+<div class="c-row">
+    <div class="c-col">
+        <div class="u-display-grid u-gap-1 xs:u-grid-columns-1 sm:u-grid-columns-2 md:u-grid-columns-3 lg:u-grid-columns-4 xl:u-grid-columns-5 u-margin-top-1 u-margin-bottom-2">
+            {{ range $challenges_to_list}}
+              <div class='search-div gradient-box-tool
+                          {{ with .Params.additional_search_terms }}
+                              {{range .}}
+                                  term-{{. | urlize}}
+                              {{end}}
+                          {{ end }}'>
+                  <ads-card has-hover-effect class="tool-card challenge-card" link="{{.Permalink}}">
+                      <ads-card-content class="tool-card-content" slot="content">
+                          <p class="search-title install-guide-title">{{.Title}}</p>
+                      </ads-card-content>
+                  </ads-card>
+              </div>
+            {{end}}
+        </div>
+    </div>
+</div>
+
+{{end}}

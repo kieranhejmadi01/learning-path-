@@ -540,6 +540,29 @@ function searchSubmit_Tools(evt) {
         window.location.href = "/install-guides/?search="+safe_formatted_search_string;
     }
 }
+function searchHandler_Challenges(search_string) {
+    if (! (typeof search_string === 'string')) {
+        search_string = search_string.value;
+    }
+
+    search_string = sanitizeInput(search_string);
+
+    const all_challenge_cards = document.querySelectorAll('div.search-div');
+    let results_to_hide = applySearchAndFilters(all_challenge_cards, search_string,'tools');
+    updateURLWithFilters({})
+    hideElements(all_challenge_cards,results_to_hide);
+    updateShownNumber();
+}
+function searchSubmit_Challenges(evt) {
+    if (evt.value == null){
+        window.location.href = "/challenges/?search=";
+    }
+    else {
+        const safe_search_string = sanitizeInput(evt.value);
+        const safe_formatted_search_string = encodeURIComponent(safe_search_string);
+        window.location.href = "/challenges/?search="+safe_formatted_search_string;
+    }
+}
 
 // change-handler-search-hook.js
 document.addEventListener("DOMContentLoaded", function () {
@@ -555,6 +578,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (document.title.includes('Install Guides')) {
         search_box.inputChangeHandler = searchHandler_Tools;    
     }
+    else if (document.title.includes('Challenges')) {
+        search_box.inputChangeHandler = searchHandler_Challenges;
+    }
     else if (document.title.includes('Learning Paths') && !(document.title.includes('Home'))) {
         search_box.inputChangeHandler = searchHandler_LearningPaths;
     }
@@ -569,6 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
         search_box.setAttribute('search-value',search_string);
 
         if (document.title.includes('Install Guides')) {     searchHandler_Tools(search_string); }
+        else if (document.title.includes('Challenges')) {    searchHandler_Challenges(search_string); }
         else {                                               searchHandler_LearningPaths(search_string,filters_list); }
     }
 });
