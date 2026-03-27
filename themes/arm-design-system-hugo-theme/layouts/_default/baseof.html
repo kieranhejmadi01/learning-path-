@@ -14,7 +14,7 @@
            {{ partialCached "math.html" . }}
         {{ end }}
     </head>
-    <body>
+    <body data-site-root='{{ "/" | relURL }}'>
         {{partial "header/nav-masthead.html" .}}
 
         {{/* Where all content sits. Each layout file defines "main" which then sits here. */}}

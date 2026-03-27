@@ -25,11 +25,15 @@ Website homepage.
         <h1 id="homepage-header" class="orchard-breeze-text">Arm Learning Paths</h1>
     </span>
 </div>
+{{ $learningPathExampleURL := "/learning-paths/cross-platform/_example-learning-path/" | relURL }}
+{{ $installGuidesURL := "/install-guides/" | relURL }}
+{{ $challengesURL := "/challenges/" | relURL }}
+{{ $aiTagURL := "/tag/ml/" | relURL }}
 <div class="homepage-top-divs homepage-top-desc">
-    <p style="margin: 0px; color: #fff;">Tutorials to help you develop software on Arm. <br> With <a id='contribute-btn' name="contribute-cta" href="/learning-paths/cross-platform/_example-learning-path/">contributions</a> from experts in Arm and our developer community.</p>
+    <p style="margin: 0px; color: #fff;">Tutorials to help you develop software on Arm. <br> With <a id='contribute-btn' name="contribute-cta" href="{{ $learningPathExampleURL }}">contributions</a> from experts in Arm and our developer community.</p>
     <div class="u-flex u-flex-wrap u-gap-1 u-margin-top-2 u-margin-bottom-1 homepage-cta-buttons">
-        <ads-cta-button size="medium" onclick="window.location.href='/install-guides'" level="secondary">Install Guides for Tools</ads-cta-button>
-        <ads-cta-button size="medium" onclick="window.location.href='/challenges'" level="secondary">Challenges</ads-cta-button>
+        <ads-cta-button size="medium" onclick="window.location.href='{{ $installGuidesURL }}'" level="secondary">Install Guides for Tools</ads-cta-button>
+        <ads-cta-button size="medium" onclick="window.location.href='{{ $challengesURL }}'" level="secondary">Challenges</ads-cta-button>
     </div>
 </div>
 
@@ -79,7 +83,7 @@ Website homepage.
                 </div>
                 </a>
             {{ end }}
-            <a href="/tag/ml/">
+            <a href="{{ $aiTagURL }}">
             <div class="main-topic-card c-row" style="flex-wrap: nowrap !important;">
                 <div class="c-col-3">
                     <img alt="Icon for AI" aria-hidden="true" src="img/main-topic-icons/ai.svg" style="width: 100%;" />

@@ -531,13 +531,14 @@ function searchHandler_OpenFilter(search_string) {
     
 }
 function searchSubmit_Tools(evt) {
+    const siteRoot = document.body?.dataset?.siteRoot || "/";
     if (evt.value == null){
-        window.location.href = "/install-guides/?search=";
+        window.location.href = `${siteRoot}install-guides/?search=`;
     }
     else {
         const safe_search_string = sanitizeInput(evt.value);
         const safe_formatted_search_string = encodeURIComponent(safe_search_string);
-        window.location.href = "/install-guides/?search="+safe_formatted_search_string;
+        window.location.href = `${siteRoot}install-guides/?search=${safe_formatted_search_string}`;
     }
 }
 function searchHandler_Challenges(search_string,filters_from_url_only) {
@@ -557,13 +558,14 @@ function searchHandler_Challenges(search_string,filters_from_url_only) {
     updateShownNumber();
 }
 function searchSubmit_Challenges(evt) {
+    const siteRoot = document.body?.dataset?.siteRoot || "/";
     if (evt.value == null){
-        window.location.href = "/challenges/?search=";
+        window.location.href = `${siteRoot}challenges/?search=`;
     }
     else {
         const safe_search_string = sanitizeInput(evt.value);
         const safe_formatted_search_string = encodeURIComponent(safe_search_string);
-        window.location.href = "/challenges/?search="+safe_formatted_search_string;
+        window.location.href = `${siteRoot}challenges/?search=${safe_formatted_search_string}`;
     }
 }
 
