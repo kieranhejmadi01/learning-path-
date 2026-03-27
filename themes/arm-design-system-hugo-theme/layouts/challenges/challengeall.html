@@ -14,81 +14,55 @@ Where it is used:
 {{ $challengefiles := slice }}
 {{ $main_challenge_title := .Params.Title }}
 
-{{if or (.Params.multi_challenge) (.Params.multichallenge_part)}}
-    {{ range .Site.Pages.ByWeight }}
-        {{if .File}}
-            {{ if (eq .File.Dir $thisdir)}}
-                {{ $challengefiles = $challengefiles | append . }}
-            {{ end }}
-        {{end}}
-    {{end}}
-{{end}}
-
-{{if or (.Params.multi_challenge) (.Params.multichallenge_part)}}
-    {{ with .Site.GetPage $thisdir}}
-        {{ $main_challenge_title = .Params.Title }}
-    {{ end }}
-{{end}}
+{{ with .Site.GetPage $thisdir}}
+    {{ $main_challenge_title = .Params.Title }}
+{{ end }}
 
 <div class="c-row md:is-collapsed u-gap-1-1/2 u-flex-nowrap u-padding-top-1">
     <div class="c-col lg:c-col-3 xl:c-col-2 u-hide lg:u-display-block u-flex-shrink-0">
         <div class="left-nav-pane">
             <h6 id="challenge-title" class="u-margin-top-1/2" style="font-size:1em; font-weight: normal;">{{ $main_challenge_title }}</h6>
+
+            {{ $counter := 0 }}
+            {{ range .Site.Pages.ByWeight }}
+                {{ if .File }}
+                    {{ if ne .Params.hide_from_navpane true }}
+                        {{ if (eq .File.Dir $thisdir)}}
+                            {{ $challengefiles = $challengefiles | append . }}
+                            {{partial "navigation/content-navigation.html" (dict "context" . "thisfile" $thisfile "counter" $counter) }}
+                            {{ $counter = add $counter 1 }}
+                        {{ end }}
+                    {{ end }}
+                {{ end }}
+            {{ end }}
+
             {{partial "general-formatting/github-links.html" .  }}
         </div>
     </div>
 
     <div class="c-col lg:c-col-9 xl:c-col-10">
-        {{if or (.Params.multi_challenge) (.Params.multichallenge_part)}}
-            {{partial "navigation/content-navigation-mobile.html" (dict "context" .    "thisfile" $thisfile    "thisdir" $thisdir    "filesindir" $challengefiles)  }}
-        {{end}}
+        {{partial "navigation/content-navigation-mobile.html" (dict "context" .    "thisfile" $thisfile    "thisdir" $thisdir    "filesindir" $challengefiles)  }}
 
-        {{if .Params.multi_challenge}}
-        {{else}}
+        {{if eq .File.TranslationBaseName "_index"}}
             {{partial "general-formatting/metadata-table.html" .}}
         {{end}}
 
-        <div class="content-box markdown-content-div">
-            {{partial "general-formatting/markdown-content-formatting.html" .Content}}
-        </div>
+        {{partial "challenges/content.html" (dict "context" . "challengefiles" $challengefiles)  }}
 
-        {{if not .Params.multi_challenge}}
+        {{if eq .File.TranslationBaseName "_index"}}
             {{ partial "challenges/community-attempts.html" . }}
         {{end}}
 
-        {{if .Params.multi_challenge}}
-            <div class="content-box markdown-content-div">
-                <h2>Select a specific challenge part:</h2>
-                <div class="c-row">
-                    <div class="c-col">
-                        <div class="u-display-grid u-gap-1 md:u-grid-columns-2 lg:u-grid-columns-2 xl:u-grid-columns-3 xxl:u-grid-columns-3 u-margin-top-1">
-                            {{range $index, $multi := $challengefiles}}
-                                {{ if ne .File.TranslationBaseName "_index" }}
-                                    <div class="gradient-box">
-                                        <ads-card class="multi-install-card" link="{{.Permalink}}">
-                                            <ads-card-content slot="content">
-                                                <h3 class="multi-tool-selection-title">{{.Title}}</h3>
-                                            </ads-card-content>
-                                        </ads-card>
-                                    </div>
-                                {{end}}
-                            {{end}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {{end}}
+        {{partial "navigation/challenge-nav-buttons.html" (dict "context" . "challengefiles" $challengefiles)  }}
 
-        {{if not .Params.multi_challenge}}
-            <br>
-            <div style="min-height: 350px;">
-                <div class="c-row">
-                    <div class="c-col">
-                        {{partial "general-formatting/feedback.html" (dict "context" . "learningpath_or_toolinstall" "challenge page")  }}
-                    </div>
+        <br>
+        <div style="min-height: 350px;">
+            <div class="c-row">
+                <div class="c-col">
+                    {{partial "general-formatting/feedback.html" (dict "context" . "learningpath_or_toolinstall" "challenge page")  }}
                 </div>
             </div>
-        {{end}}
+        </div>
     </div>
 </div>
 

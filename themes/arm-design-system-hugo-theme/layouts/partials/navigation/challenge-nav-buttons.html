@@ -1,0 +1,35 @@
+{{/*
+Creates back and next buttons for challenge pages.
+
+Where it is used:
+    - challenge pages
+*/}}
+
+<div class="c-row u-margin-top-2 u-margin-bottom-2">
+    {{ $counter := 0 }}
+    {{ range .challengefiles }}
+        {{ if eq .Weight $.context.Weight }}
+            {{ $backlink := (index $.challengefiles (sub $counter 1)).Permalink }}
+            {{ $nextlink := (index $.challengefiles (add $counter 1)).Permalink }}
+            {{ $backname := (index $.challengefiles (sub $counter 1)).Title }}
+            {{ $nextname := (index $.challengefiles (add $counter 1)).Title }}
+
+            {{ if $backlink }}
+                <div class="c-col">
+                    <ads-button name="{{$backname}}" style="float:left" onclick="window.location.href={{$backlink}}" level="tertiary">
+                        Back
+                    </ads-button>
+                </div>
+            {{ end }}
+
+            {{ if $nextlink }}
+                <div class="c-col">
+                    <ads-button name="{{$nextname}}" style="float:right;" onclick="window.location.href={{$nextlink}}" level="primary">
+                        Next
+                    </ads-button>
+                </div>
+            {{ end }}
+        {{ end }}
+        {{ $counter = add $counter 1 }}
+    {{ end }}
+</div>
