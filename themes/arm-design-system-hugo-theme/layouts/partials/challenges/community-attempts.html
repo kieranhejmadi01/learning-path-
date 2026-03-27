@@ -7,7 +7,7 @@ Where it is used:
 
 <div class="content-box markdown-content-div community-attempts-box">
     <div class="community-attempts-header">
-        <img src="/img/github.svg" alt="GitHub logo" class="community-attempts-logo" />
+        <img src='{{ "img/github.svg" | relURL }}' alt="GitHub logo" class="community-attempts-logo" />
         <h2 class="u-margin-top-0 u-margin-bottom-0">Community attempts</h2>
     </div>
 
@@ -20,7 +20,7 @@ Where it is used:
                         <ads-card-content slot="content">
                             <div class="community-attempt-card">
                                 <div class="community-attempt-card-title-row">
-                                    <img src="/img/github.svg" alt="GitHub logo" class="community-attempt-card-logo" />
+                                    <img src='{{ "img/github.svg" | relURL }}' alt="GitHub logo" class="community-attempt-card-logo" />
                                     <h3 class="multi-tool-selection-title u-margin-top-0 u-margin-bottom-0">{{ .title }}</h3>
                                 </div>
                                 {{ with .author }}<p class="community-attempt-meta">By {{ . }}</p>{{ end }}
