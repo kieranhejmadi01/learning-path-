@@ -1,11 +1,15 @@
 title = 'Arm Learning Paths'
 
-baseURL = '/'
+baseURL = 'https://kieranhejmadi01.github.io/<repo>/'
 languageCode = 'en-us'
 theme = "arm-design-system-hugo-theme"
 
 enableGitInfo = true
 enableRobotsTXT = true
+
+[caches]
+  [caches.images]
+    dir = ':cacheDir/images'
 
 [deployment]
 [[deployment.targets]]
