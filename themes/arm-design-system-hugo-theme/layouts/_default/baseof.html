@@ -14,7 +14,7 @@
            {{ partialCached "math.html" . }}
         {{ end }}
     </head>
-    <body data-site-root='{{ "/" | relURL }}'>
+    <body data-site-root='{{ .Site.Home.RelPermalink }}'>
         {{partial "header/nav-masthead.html" .}}
 
         {{/* Where all content sits. Each layout file defines "main" which then sits here. */}}
