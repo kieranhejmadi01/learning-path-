@@ -128,7 +128,7 @@ Called from:
                 {{end}}
                     <tr>
                         <td class="td-metadata-key nowrap">
-                            Reading time:
+                            {{if $is_challenge}}Typical completion time:{{else}}Reading time:{{end}}
                         </td>
                         <td id="reading-time" class="td-metadata-value" >
                             <span><i class="fa-light fa-clock fa-sm"></i></span>&nbsp; <span class="time-to-complete-string" name="{{.Params.minutes_to_complete}}">{{partial "server-side-processing/time-beautifier.html" .Params.minutes_to_complete}}</span>
@@ -178,7 +178,7 @@ Called from:
                 {{end}}
                     <tr>
                         <td class="td-metadata-key width-max-content">
-                            Reading time:
+                            {{if $is_challenge}}Typical completion time:{{else}}Reading time:{{end}}
                         </td>
                     </tr>
                     <tr>

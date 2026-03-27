@@ -1,6 +1,6 @@
 ---
 title: PLACEHOLDER PART TITLE
-minutes_to_complete: 60
+minutes_to_complete: 30240
 author: PLACEHOLDER NAME
 weight: 2
 

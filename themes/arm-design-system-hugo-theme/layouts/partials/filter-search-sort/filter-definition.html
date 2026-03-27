@@ -34,6 +34,36 @@ Calls to:
     {{ partial "filter-search-sort/closed-expansion.html" (dict "context" .context "displayname" "OS" "routing" "operatingsystems" "tagnames" .context.Params.operatingsystems_filter)}} 
     {{ partial "filter-search-sort/closed-expansion.html" (dict "context" .context "displayname" "Skill Level" "routing" "skilllevels" "tagnames" (slice "Introductory" "Advanced"))}}
     {{ partial "filter-search-sort/open-expansion.html"   (dict "context" .context "displayname" "Tools, Software, and Languages"  "tagnames" .context.Params.tools_software_languages_filter)}}
+{{ else if eq .page_type "challenge-list"}}
+    {{ $challenge_pages := where .context.Site.Pages "Params.challenge" true }}
+    {{ $subject_counts := dict }}
+    {{ $tool_counts := dict }}
+    {{ $subject_filters := slice }}
+    {{ $tool_filters := slice }}
+
+    {{ range $challenge_pages }}
+        {{ with .Params.subjects }}
+            {{ $current_count := index $subject_counts . | default 0 }}
+            {{ $subject_counts = merge $subject_counts (dict . (add $current_count 1)) }}
+        {{ end }}
+        {{ with .Params.tools_software_languages }}
+            {{ range . }}
+                {{ $current_count := index $tool_counts . | default 0 }}
+                {{ $tool_counts = merge $tool_counts (dict . (add $current_count 1)) }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+
+    {{ range $name, $count := $subject_counts }}
+        {{ $subject_filters = $subject_filters | append (dict $name $count) }}
+    {{ end }}
+    {{ range $name, $count := $tool_counts }}
+        {{ $tool_filters = $tool_filters | append (dict $name $count) }}
+    {{ end }}
+
+    {{ partial "filter-search-sort/closed-expansion.html" (dict "context" .context "displayname" "Subjects" "routing" "subjects" "tagnames" $subject_filters)}}
+    {{ partial "filter-search-sort/closed-expansion.html" (dict "context" .context "displayname" "Skill Level" "routing" "skilllevels" "tagnames" (slice "Introductory" "Advanced"))}}
+    {{ partial "filter-search-sort/open-expansion.html"   (dict "context" .context "displayname" "Tools, Software, and Languages"  "tagnames" $tool_filters)}}
 {{ else if eq .page_type "learning-path-term"}}
     {{ partial "filter-search-sort/closed-expansion.html" (dict "context" .context "displayname" "Categories" "routing" "learning-paths" "tagnames" $main_category_titles)}} 
 {{end}}

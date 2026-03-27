@@ -1,9 +1,20 @@
 ---
 title: "Build an architecture insight dashboard"
-minutes_to_complete: 120
+minutes_to_complete: 30240
 author:
     - Arm Developer Program
 weight: 1
+subjects: Performance and Architecture
+skilllevels: Advanced
+tools_software_languages:
+    - JavaScript
+    - Python
+    - Data visualization
+operatingsystems:
+    - Linux
+    - macOS
+    - Windows
+community_attempts: []
 challenge: true
 multi_challenge: false
 multichallenge_part: false

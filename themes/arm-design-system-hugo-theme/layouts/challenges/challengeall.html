@@ -52,6 +52,10 @@ Where it is used:
             {{partial "general-formatting/markdown-content-formatting.html" .Content}}
         </div>
 
+        {{if not .Params.multi_challenge}}
+            {{ partial "challenges/community-attempts.html" . }}
+        {{end}}
+
         {{if .Params.multi_challenge}}
             <div class="content-box markdown-content-div">
                 <h2>Select a specific challenge part:</h2>

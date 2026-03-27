@@ -540,16 +540,19 @@ function searchSubmit_Tools(evt) {
         window.location.href = "/install-guides/?search="+safe_formatted_search_string;
     }
 }
-function searchHandler_Challenges(search_string) {
+function searchHandler_Challenges(search_string,filters_from_url_only) {
     if (! (typeof search_string === 'string')) {
         search_string = search_string.value;
+    }
+
+    if (filters_from_url_only) {
+        turnOnFilters(filters_from_url_only);
     }
 
     search_string = sanitizeInput(search_string);
 
     const all_challenge_cards = document.querySelectorAll('div.search-div');
-    let results_to_hide = applySearchAndFilters(all_challenge_cards, search_string,'tools');
-    updateURLWithFilters({})
+    let results_to_hide = applySearchAndFilters(all_challenge_cards, search_string,'paths');
     hideElements(all_challenge_cards,results_to_hide);
     updateShownNumber();
 }
@@ -595,7 +598,7 @@ document.addEventListener("DOMContentLoaded", function () {
         search_box.setAttribute('search-value',search_string);
 
         if (document.title.includes('Install Guides')) {     searchHandler_Tools(search_string); }
-        else if (document.title.includes('Challenges')) {    searchHandler_Challenges(search_string); }
+        else if (document.title.includes('Challenges')) {    searchHandler_Challenges(search_string,filters_list); }
         else {                                               searchHandler_LearningPaths(search_string,filters_list); }
     }
 });

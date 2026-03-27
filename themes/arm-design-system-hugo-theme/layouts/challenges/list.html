@@ -8,39 +8,48 @@ Where it is used:
 {{define "main"}}
 
 {{ $challenges_to_list := where .Site.Pages "Params.challenge" true}}
+{{ $sorted_challenges_to_list := sort $challenges_to_list "Lastmod" "desc" }}
 
-<p class="u-margin-top-1 u-margin-left-1 u-margin-bottom-1/2 u-font-size-90%">
-    Explore open-ended projects for Arm developers. Try these search terms:
-    {{- range $i, $e := .Params.additional_search_terms -}}
-        {{- if $i -}}
-            ,
-        {{- end -}}
-        &nbsp;<a class="common-search-term-link" href='/challenges/?search={{$e}}'>{{$e}}</a>
-    {{- end -}}
-    .
-</p>
+<div class="c-row md:is-collapsed u-gap-1-1/2 u-flex-nowrap u-padding-top-2 u-padding-bottom-2-1/2">
+    <div class="c-col u-hide lg:u-display-block u-flex-shrink-0 filter-column-div">
+        {{ partial "filter-search-sort/filter-definition.html" (dict "context" . "page_type" "challenge-list")}}
+    </div>
 
-<ads-search class="u-margin-top-0 challenges" has-search-button id="search-box" placeholder="Search challenges"></ads-search>
-
-{{ partial "filter-search-sort/active-filter-and-sort-bar.html" (dict "content_to_list" $challenges_to_list "page_type" "tools")}}
-
-<div class="c-row">
     <div class="c-col">
-        <div class="u-display-grid u-gap-1 xs:u-grid-columns-1 sm:u-grid-columns-2 md:u-grid-columns-3 lg:u-grid-columns-4 xl:u-grid-columns-5 u-margin-top-1 u-margin-bottom-2">
-            {{ range $challenges_to_list}}
-              <div class='search-div gradient-box-tool
-                          {{ with .Params.additional_search_terms }}
-                              {{range .}}
-                                  term-{{. | urlize}}
-                              {{end}}
-                          {{ end }}'>
-                  <ads-card has-hover-effect class="tool-card challenge-card" link="{{.Permalink}}">
-                      <ads-card-content class="tool-card-content" slot="content">
-                          <p class="search-title install-guide-title">{{.Title}}</p>
-                      </ads-card-content>
-                  </ads-card>
-              </div>
-            {{end}}
+        {{ partial "filter-search-sort/mobile-search-and-filter.html" (dict "context" . "page_type" "challenge-list")}}
+
+        {{ partial "filter-search-sort/active-filter-and-sort-bar.html" (dict "content_to_list" $challenges_to_list "page_type" "challenges")}}
+
+        <div class="c-row">
+            <div class="c-col c-col-12">
+                <hr id="divider-line" class="">
+            </div>
+
+            <div class="c-col c-col-12">
+                <div id='path-container' class="u-display-grid u-gap-1 sm:u-grid-columns-1 md:u-grid-columns-2 xl:u-grid-columns-2 xxl:u-grid-columns-3 u-margin-top-1">
+                    {{ range $sorted_challenges_to_list }}
+                        <div class='path-div search-div gradient-box
+                                {{ with .Params.skilllevels }}
+                                    tag-{{. | urlize}}
+                                {{ end }}
+                                {{ with .Params.subjects }}
+                                    tag-{{. | urlize}}
+                                {{ end }}
+                                {{ with .Params.operatingsystems }}
+                                    {{ range .}}
+                                        tag-{{. | urlize}}
+                                    {{ end }}
+                                {{ end }}
+                                {{ with .Params.tools_software_languages }}
+                                    {{ range .}}
+                                        tag-{{replace (. | urlize) "+" "plus"}}
+                                    {{end}}
+                                {{ end }}'>
+                            {{ partial "general-formatting/challenge-ads-card.html" (dict "challenge" . "calculated_date" .Lastmod) }}
+                        </div>
+                    {{ end }}
+                </div>
+            </div>
         </div>
     </div>
 </div>

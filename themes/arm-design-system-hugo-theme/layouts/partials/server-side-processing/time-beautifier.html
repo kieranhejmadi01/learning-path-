@@ -16,9 +16,46 @@ Called from:
 */}}
 
 
-{{- $h := div (int .) 60 -}}
-{{- $m := mod (int .) 60 -}}
+{{- $total_minutes := int . -}}
+{{- $week_minutes := 10080 -}}
+{{- $day_minutes := 1440 -}}
+{{- $h := div $total_minutes 60 -}}
+{{- $m := mod $total_minutes 60 -}}
 {{- $formatted_time := "" -}}
+
+{{- if ge $total_minutes $week_minutes -}}
+  {{- $weeks := div $total_minutes $week_minutes -}}
+  {{- $remaining_after_weeks := mod $total_minutes $week_minutes -}}
+  {{- $days := div $remaining_after_weeks $day_minutes -}}
+  {{- if eq $weeks 1 -}}
+    {{- $formatted_time = "1 week" -}}
+  {{- else -}}
+    {{- $formatted_time = print $weeks " weeks" -}}
+  {{- end -}}
+  {{- if gt $days 0 -}}
+    {{- if eq $days 1 -}}
+      {{- $formatted_time = print $formatted_time " 1 day" -}}
+    {{- else -}}
+      {{- $formatted_time = print $formatted_time " " $days " days" -}}
+    {{- end -}}
+  {{- end -}}
+{{- else if ge $total_minutes $day_minutes -}}
+  {{- $days := div $total_minutes $day_minutes -}}
+  {{- $remaining_after_days := mod $total_minutes $day_minutes -}}
+  {{- $day_hours := div $remaining_after_days 60 -}}
+  {{- if eq $days 1 -}}
+    {{- $formatted_time = "1 day" -}}
+  {{- else -}}
+    {{- $formatted_time = print $days " days" -}}
+  {{- end -}}
+  {{- if gt $day_hours 0 -}}
+    {{- if eq $day_hours 1 -}}
+      {{- $formatted_time = print $formatted_time " 1 hr" -}}
+    {{- else -}}
+      {{- $formatted_time = print $formatted_time " " $day_hours " hrs" -}}
+    {{- end -}}
+  {{- end -}}
+{{- else -}}
 
 <!-- translate hours -->
 {{- if eq $h 0 -}}
@@ -36,6 +73,8 @@ Called from:
   {{- $formatted_time = (print $formatted_time " " $m " min") -}}
 {{- else -}}
   {{- $formatted_time = (print $m " min") -}}
+{{- end -}}
+
 {{- end -}}
 
 <!-- return_str:  '2 hrs 25 min'        '40min'     '1 hr'  -->

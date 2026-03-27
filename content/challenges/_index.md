@@ -5,4 +5,6 @@ additional_search_terms:
     - visualization
     - ecosystem
     - extension
+subjects_filter:
+    - Performance and Architecture: 1
 ---

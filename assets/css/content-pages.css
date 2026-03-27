@@ -178,6 +178,42 @@ html[theme='dark'] ads-card.multi-install-card:hover .multi-tool-selection-title
 }
 
 
+/* Challenge community attempts
+*******************************************************************/
+.community-attempts-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.community-attempts-logo {
+    width: 28px;
+    height: 28px;
+}
+
+.community-attempt-card-logo {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.community-attempt-card-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.community-attempt-meta,
+.community-attempt-summary {
+    margin-bottom: 0;
+}
+
+.community-attempt-meta {
+    color: #A3A8AE;
+    font-size: 0.9rem !important;
+}
+
+
 
 
 /* Review page styling
