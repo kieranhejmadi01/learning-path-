@@ -104,6 +104,11 @@
     margin-bottom: 32px;
 }
 
+.homepage-cta-buttons {
+    justify-content: center;
+    align-items: center;
+}
+
 #homepage-header {
     margin-top: 0px;
     margin-bottom: 0px;
