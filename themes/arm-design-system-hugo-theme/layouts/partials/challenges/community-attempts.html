@@ -15,16 +15,33 @@ Where it is used:
         <p>Explore how other developers approached this challenge, then build on their ideas or contribute your own improvements.</p>
         <div class="u-display-grid u-gap-1 md:u-grid-columns-2 xl:u-grid-columns-2 u-margin-top-1">
             {{ range .Params.community_attempts }}
+                {{ $attempt := . }}
+                {{ $link := "" }}
+                {{ $title := "" }}
+                {{ $author := "" }}
+                {{ $summary := "" }}
+
+                {{ if eq (printf "%T" $attempt) "string" }}
+                    {{ $link = $attempt }}
+                    {{ $title = replaceRE "^https?://" "" $attempt }}
+                    {{ $title = replaceRE "/+$" "" $title }}
+                {{ else }}
+                    {{ $link = or $attempt.link $attempt.url }}
+                    {{ $title = or $attempt.title (replaceRE "/+$" "" (replaceRE "^https?://" "" $link)) }}
+                    {{ $author = $attempt.author }}
+                    {{ $summary = $attempt.summary }}
+                {{ end }}
+
                 <div class="gradient-box">
-                    <ads-card class="multi-install-card" link="{{ .link }}">
+                    <ads-card class="multi-install-card" link="{{ $link }}">
                         <ads-card-content slot="content">
                             <div class="community-attempt-card">
                                 <div class="community-attempt-card-title-row">
                                     <img src="/img/github.svg" alt="GitHub logo" class="community-attempt-card-logo" />
-                                    <h3 class="multi-tool-selection-title u-margin-top-0 u-margin-bottom-0">{{ .title }}</h3>
+                                    <h3 class="multi-tool-selection-title u-margin-top-0 u-margin-bottom-0">{{ $title }}</h3>
                                 </div>
-                                {{ with .author }}<p class="community-attempt-meta">By {{ . }}</p>{{ end }}
-                                {{ with .summary }}<p class="community-attempt-summary">{{ . }}</p>{{ end }}
+                                {{ with $author }}<p class="community-attempt-meta">By {{ . }}</p>{{ end }}
+                                {{ with $summary }}<p class="community-attempt-summary">{{ . }}</p>{{ end }}
                             </div>
                         </ads-card-content>
                     </ads-card>
