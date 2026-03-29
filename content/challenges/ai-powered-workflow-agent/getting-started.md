@@ -1,5 +1,5 @@
 ---
-title: Resources and submission
+title: Getting started
 weight: 3
 layout: challengeall
 ---
@@ -23,14 +23,3 @@ These skills and resources are helpful before you begin:
 This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
 
 Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
-
-## Submit your challenge attempt
-
-To submit your work:
-
-- Open a pull request against this repository
-- Add `ai-powered-workflow-agent` in the `Challenge slug:` field in the pull request template
-- Add your GitHub repository in the `Challenge repository URL:` field in the pull request template
-- Confirm the pull request does not contain confidential information by completing the pull request checklist
-
-After the pull request is merged, the site updates the Community attempts section automatically. You do not need to edit challenge metadata directly.

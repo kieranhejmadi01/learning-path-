@@ -20,6 +20,7 @@ Called from:
 {{$is_learning_path := false}}
 {{$is_challenge := false}}
 {{$table_name := "Install Guide"}}
+{{$challenge_deadline := .Params.challenge_deadline | default "There is no deadline, so you can start and complete the challenge at your convenience."}}
 
 <!-- Trial new IG title structure for SEO optimization -->
 {{$seo_pages := slice "AWS CLI" "Anaconda" "Chromium" "CMake" "Docker Desktop" "Docker for Windows on Arm" "AWS EKS CLI (eksctl)" "Google Cloud Platform (GCP) CLI" "Hyper-V on Arm" "Kubectl" "NoMachine" "Ansible" "AWS Credentials"}}
@@ -104,6 +105,9 @@ Called from:
  <!-- Markdown metadata table -->
  <div class="content-box">
     {{- $page_h2 := printf "About this %s" $table_name -}}
+    {{- if $is_challenge -}}
+        {{- $page_h2 = "About this challenge" -}}
+    {{- end -}}
     {{- $p_title := .Title -}}
     {{- range $seo_pages -}}
         {{- if eq $p_title . -}}
@@ -256,6 +260,16 @@ Called from:
                             {{- end -}}
                         </td>
                     </tr>
+                    {{if $is_challenge}}
+                    <tr>
+                        <td class="td-metadata-key width-max-content nowrap">
+                            Challenge deadline:
+                        </td>
+                        <td id="challenge-deadline" class="td-metadata-value">
+                            <span><i class="fa-light fa-flag-checkered fa-sm"></i></span>&nbsp; {{$challenge_deadline}}
+                        </td>
+                    </tr>
+                    {{end}}
                     <!-- Arm IP if learning path. Official Docs if tool -->
                     {{if $is_learning_path}}
                         <tr>
@@ -379,6 +393,18 @@ Called from:
                             </ul>
                         </td>
                     </tr>
+                    {{if $is_challenge}}
+                        <tr>
+                            <td class="td-metadata-key width-max-content">
+                                Challenge deadline:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="challenge-deadline" class="td-metadata-value margin-l-24">
+                                <span><i class="fa-light fa-flag-checkered fa-sm"></i></span>&nbsp; {{$challenge_deadline}}
+                            </td>
+                        </tr>
+                    {{end}}
                     {{if $is_learning_path}}
                         <tr>
                             <td class="td-metadata-key width-max-content">

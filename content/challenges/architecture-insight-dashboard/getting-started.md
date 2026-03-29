@@ -1,5 +1,5 @@
 ---
-title: Resources and submission
+title: Getting started
 weight: 3
 layout: challengeall
 ---
@@ -33,4 +33,3 @@ This challenge is designed to be self-serve, with optional support from Arm Amba
 
 Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
 
-To submit a project, use the [online form](https://forms.office.com/e/VZnJQLeRhD). Do not include confidential information in your submission. If you are affiliated with an academic institution, make sure you have the right to share your material.
