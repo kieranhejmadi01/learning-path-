@@ -22,8 +22,4 @@ These skills and resources are helpful before you begin:
 - Software: [vkdt open source photography workflow](https://github.com/hanatos/vkdt)
 - Tutorial: [Minimal Arm VGF backend demonstration](https://github.com/pytorch/executorch/blob/main/examples/arm/vgf_minimal_example.ipynb)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
 If you need help with hardware access for this project, contact Arm-Developer-Labs@arm.com.

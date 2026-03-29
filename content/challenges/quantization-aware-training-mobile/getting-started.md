@@ -20,8 +20,3 @@ These skills and resources are helpful before you begin:
 - Dataset documentation: [Hugging Face Datasets](https://huggingface.co/docs/datasets/en/index)
 - Repository: [AI on Arm course](https://github.com/arm-university/AI-on-Arm)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.

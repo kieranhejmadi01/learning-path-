@@ -21,8 +21,3 @@ These skills and resources are helpful before you begin:
 - Webinar: [Generative AI in game development](https://meet95924766.adobeconnect.com/pkevz158x6tp/)
 - Survey: [A survey on large language model-based game agents](https://arxiv.org/abs/2404.02039)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.

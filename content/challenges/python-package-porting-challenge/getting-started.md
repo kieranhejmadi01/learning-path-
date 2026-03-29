@@ -21,8 +21,3 @@ These skills and resources are helpful before you begin:
 - Community post: [Python on Windows Arm64](https://discuss.python.org/t/python-on-windows-arm64/104524)
 - GitHub repository: [cibuildwheel](https://github.com/pypa/cibuildwheel)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
