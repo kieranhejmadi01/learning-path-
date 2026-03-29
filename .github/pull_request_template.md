@@ -2,6 +2,13 @@
 Before submitting a pull request for a new Learning Path, please review [Create a Learning Path](https://learn.arm.com/learning-paths/cross-platform/_example-learning-path/)
 - [ ] I have reviewed Create a Learning Path
 
+## Challenge submission details
+
+If this pull request includes a challenge submission, complete these fields. Otherwise, leave them blank.
+
+- Challenge slug:
+- Challenge repository URL:
+
 Please do not include any confidential information in your contribution. This includes confidential microarchitecture details and unannounced product information. 
 
 - [ ] I have checked my contribution for confidential information

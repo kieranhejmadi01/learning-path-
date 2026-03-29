@@ -8,11 +8,11 @@ Where it is used:
 <div class="content-box markdown-content-div community-attempts-box">
     <div class="community-attempts-header">
         <img src='{{ "img/github.svg" | relURL }}' alt="GitHub logo" class="community-attempts-logo" />
-        <h2 class="u-margin-top-0 u-margin-bottom-0">Community attempts</h2>
+        <h2 class="u-margin-top-0 u-margin-bottom-0">Community solutions</h2>
     </div>
 
     {{ if .Params.community_attempts }}
-        <p>Explore how other developers approached this challenge, then build on their ideas or contribute your own improvements.</p>
+        <p>Review stand out submissions from the community, and Arm, to explore novel ideas and see how other developers approached this challenge.</p>
         <div class="u-display-grid u-gap-1 md:u-grid-columns-2 xl:u-grid-columns-2 u-margin-top-1">
             {{ range .Params.community_attempts }}
                 <div class="gradient-box">
@@ -32,6 +32,6 @@ Where it is used:
             {{ end }}
         </div>
     {{ else }}
-        <p>No community repositories are linked yet. Add Git repository links in the challenge front matter under `community_attempts` to showcase developer solutions here.</p>
+        <p>No assessed community solutions are listed yet. Add project details under `community_attempts` in the challenge front matter to feature submissions here.</p>
     {{ end }}
 </div>
