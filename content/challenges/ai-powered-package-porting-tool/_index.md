@@ -9,11 +9,16 @@ skilllevels: Advanced
 tools_software_languages:
     - Python
     - Bash
-    - Nextflow
+    - Docker
 operatingsystems:
     - Linux
     - macOS
     - Windows
+community_attempts:
+  - link: "https://github.com/arm/mcp"
+    title: "Arm Model Context Protocol (MCP) Server"
+    author: "Arm Limited and Contributors"
+    summary: "An MCP server providing AI assistants with tools and knowledge for Arm architecture development, migration, and optimization."
 challenge: true
 multi_challenge: false
 multichallenge_part: false
