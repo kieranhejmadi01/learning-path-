@@ -14,6 +14,7 @@ operatingsystems:
     - Linux
     - macOS
     - Windows
+challenge_prize: ""
 community_attempts:
   - link: "https://github.com/egkoppel/example-papers"
     title: "Mathematics Questions Solver"

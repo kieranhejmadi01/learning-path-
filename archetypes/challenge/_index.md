@@ -3,6 +3,7 @@ title: PLACEHOLDER TITLE
 minutes_to_complete: 30240
 author: PLACEHOLDER NAME
 community_attempts: []
+challenge_prize: ""
 
 ### Tags
 skilllevels: Advanced
