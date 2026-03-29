@@ -24,4 +24,6 @@ layout: challengeall
 
 Modern camera experiences such as night mode, portrait effects, and extreme zoom increasingly depend on neural networks. With Arm SME2 and related acceleration features becoming available in commercial devices, more of these workloads can run efficiently on Arm CPUs and GPUs.
 
+![close-up comparison of super-resolution image enhancement showing improved detail](./super-resolution_example_closeup.png)
+
 In this challenge, you design and implement a novel computational photography pipeline optimized for an Arm-based device. Your solution should focus on both image quality and execution efficiency.
