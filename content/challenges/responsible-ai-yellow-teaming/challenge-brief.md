@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Introduce a structured Yellow Teaming workflow that stress-tests an AI product by exploring the consequences of success, not only obvious failures.
 

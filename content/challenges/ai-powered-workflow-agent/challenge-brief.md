@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Develop an AI-powered agent that automates repetitive or complex workflow tasks in a specific domain, such as software engineering, e-commerce, or DevOps.
 

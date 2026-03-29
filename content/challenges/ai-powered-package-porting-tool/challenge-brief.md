@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Create an intelligent automation tool that supports package porting for domains such as bioinformatics pipelines with Nextflow or statistics workflows with R.
 

@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Design and implement one of the following computational photography pipelines, or a closely related variant, on an Arm-based system:
 

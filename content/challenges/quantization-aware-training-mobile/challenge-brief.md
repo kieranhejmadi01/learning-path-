@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Train a model using a non-restrictively licensed dataset, apply quantization-aware training, and deploy the result to an Arm-powered mobile target such as an Android phone or emulator.
 

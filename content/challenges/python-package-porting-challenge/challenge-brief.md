@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Advance the Windows on Arm Python ecosystem by validating and optimizing third-party packages so they build and run successfully on `win_arm64`.
 
