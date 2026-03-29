@@ -22,8 +22,3 @@ These skills and resources are helpful before you begin:
 - Documentation: [CRAN and Bioconductor Windows on Arm package results](https://www.r-project.org/nosvn/winutf8/ucrt3/CRAN_aarch64/install_out/)
 - Dataset: [NCBI datasets](https://www.ncbi.nlm.nih.gov/datasets/)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.

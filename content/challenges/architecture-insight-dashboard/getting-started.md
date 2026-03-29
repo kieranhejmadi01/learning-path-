@@ -27,9 +27,4 @@ Aim to produce a working prototype that includes:
 - At least one chart, table, or heatmap that highlights feature support
 - A short explanation of your data sources and update strategy
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
 

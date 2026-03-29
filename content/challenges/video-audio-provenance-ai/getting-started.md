@@ -21,8 +21,4 @@ These skills and resources are helpful before you begin:
 - Learning Path: [Vision LLM inference on Android with KleidiAI and MNN](https://learn.arm.com/learning-paths/mobile-graphics-and-gaming/vision-llm-inference-on-android-with-kleidiai-and-mnn/)
 - Learning Path: [Build a hands-free selfie Android application with MediaPipe](https://learn.arm.com/learning-paths/mobile-graphics-and-gaming/build-android-selfie-app-using-mediapipe-multimodality/)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
 You are also welcome to contact Arm-Developer-Labs@arm.com to enquire about further support.

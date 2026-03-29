@@ -22,6 +22,7 @@ Called from:
 {{$table_name := "Install Guide"}}
 {{$challenge_deadline := .Params.challenge_deadline | default "There is no deadline, so you can start and complete the challenge at your convenience."}}
 {{$challenge_prize := .Params.challenge_prize | default "Standout submissions can be featured on this website as formal recognition from Arm, giving you an achievement you can reference on LinkedIn and on your CV."}}
+{{$challenge_support_url := "https://developer.arm.com/arm-developer-program"}}
 
 <!-- Trial new IG title structure for SEO optimization -->
 {{$seo_pages := slice "AWS CLI" "Anaconda" "Chromium" "CMake" "Docker Desktop" "Docker for Windows on Arm" "AWS EKS CLI (eksctl)" "Google Cloud Platform (GCP) CLI" "Hyper-V on Arm" "Kubectl" "NoMachine" "Ansible" "AWS Credentials"}}
@@ -314,6 +315,14 @@ Called from:
                             <span><i class="fa-light fa-award fa-sm"></i></span>&nbsp; {{$challenge_prize}}
                         </td>
                     </tr>
+                    <tr>
+                        <td class="td-metadata-key width-max-content nowrap" style="padding-top: 10px; vertical-align: top;">
+                            Support:
+                        </td>
+                        <td id="challenge-support" class="td-metadata-value" style="padding-top: 10px;">
+                            <span><i class="fa-light fa-handshake fa-sm"></i></span>&nbsp; This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. <a href="{{$challenge_support_url}}" target="_blank">Join the program here {{ partial "general-formatting/external-link.html"}}</a>.
+                        </td>
+                    </tr>
                     {{end}}
                     <!-- Arm IP if learning path. Official Docs if tool -->
                     {{if $is_learning_path}}
@@ -420,6 +429,16 @@ Called from:
                         <tr>
                             <td id="challenge-prize" class="td-metadata-value margin-l-24" style="padding-top: 10px;">
                                 <span><i class="fa-light fa-award fa-sm"></i></span>&nbsp; {{$challenge_prize}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-metadata-key width-max-content" style="padding-top: 10px;">
+                                Support:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="challenge-support" class="td-metadata-value margin-l-24" style="padding-top: 10px;">
+                                <span><i class="fa-light fa-handshake fa-sm"></i></span>&nbsp; This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. <a href="{{$challenge_support_url}}" target="_blank">Join the program here {{ partial "general-formatting/external-link.html"}}</a>.
                             </td>
                         </tr>
                     {{end}}

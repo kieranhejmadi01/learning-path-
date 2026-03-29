@@ -82,8 +82,6 @@ Aim to produce a working prototype that includes:
 
 ## Support and recognition
 
-This challenge is designed to be self-serve, with optional support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
 Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
 
 To submit a project, use the [online form](https://forms.office.com/e/VZnJQLeRhD). Do not include confidential information in your submission. If you are affiliated with an academic institution, make sure you have the right to share your material.

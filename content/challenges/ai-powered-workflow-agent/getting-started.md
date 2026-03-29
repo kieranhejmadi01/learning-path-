@@ -18,8 +18,3 @@ These skills and resources are helpful before you begin:
 - Learning Path: [Deploy an MCP server on a Raspberry Pi 5 for AI agent interaction](https://learn.arm.com/learning-paths/cross-platform/mcp-ai-agent/)
 - Learning Path: [Deploy an AI agent on Arm with llama.cpp and llama-cpp-agent](https://learn.arm.com/learning-paths/servers-and-cloud-computing/ai-agent-on-cpu/)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.

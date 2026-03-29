@@ -19,8 +19,3 @@ These skills and resources are helpful before you begin:
 - Blog: [Build responsible AI products with your own yellow teaming LLM](https://pytorch.org/blog/build-responsible-ai-products-with-your-own-yellow-teaming-llm/)
 - Learning Paths: [AI Learning Paths](https://learn.arm.com/tag/ml)
 
-## Support and recognition
-
-This challenge is designed to be self-serve, with optional community support from Arm Ambassadors in the Arm Developer program. If you are not already part of the program, you can [join here](https://www.arm.com/resources/developer-program?#register).
-
-Strong community contributions can earn digital badges that support CV or resumé building and help you show your work publicly.
