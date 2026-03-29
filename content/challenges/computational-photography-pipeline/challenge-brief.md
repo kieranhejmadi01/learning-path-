@@ -27,3 +27,23 @@ Your project should aim to optimize both inference latency and perceived image q
 - Neural inference optimization
 - SIMD and GPU-aware implementation on Arm
 - Image quality evaluation
+
+## Assessment criteria
+
+Submissions are assessed using broad criteria that balance image quality, technical execution, and effective use of Arm platforms.
+
+#### Use of Arm technology
+
+Your submission should make meaningful use of Arm-based compute features such as SIMD, SME, SVE, Vulkan acceleration, or Arm-oriented runtimes. Strong entries explain how the implementation takes advantage of Arm hardware rather than treating Arm as only a target device.
+
+#### Image quality and technical performance
+
+Assessors look for a convincing balance between visual quality and runtime efficiency. Strong submissions demonstrate thoughtful trade-offs in latency, memory use, precision, and output quality for the selected photography task.
+
+#### Novelty and design choices
+
+Your project should show considered technical design, whether through model architecture, pipeline structure, optimization strategy, or evaluation method. Strong entries present a distinctive approach or a clearly justified improvement over a simpler baseline.
+
+#### Documentation and reproducibility
+
+Your work should be clear enough for others to understand and test. Strong submissions provide setup instructions, model details, evaluation steps, and enough context for reviewers to reproduce both performance and quality claims.

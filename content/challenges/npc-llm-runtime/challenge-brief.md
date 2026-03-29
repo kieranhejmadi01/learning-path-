@@ -25,3 +25,23 @@ Your submission should include, where possible:
 - Real-time systems design
 - On-device AI optimization
 - Gameplay prototyping on Arm
+
+## Assessment criteria
+
+Submissions are assessed using broad criteria that reflect gameplay value, technical quality, and suitability for Arm-based systems.
+
+#### Use of Arm technology
+
+Your submission should show that the prototype runs effectively on an Arm-based system or is clearly designed with Arm deployment in mind. Strong entries explain how the runtime, model setup, or optimization choices support practical play on Arm hardware.
+
+#### Gameplay relevance and novelty
+
+Assessors look for ideas that improve interaction with NPCs in a meaningful way. Strong submissions demonstrate a believable gameplay scenario and show originality in how language models influence player experience or NPC behavior.
+
+#### Runtime quality and robustness
+
+Your implementation should be stable enough to demonstrate the concept clearly. Strong entries show reliable runtime behavior, sensible latency or frame-rate decisions, and good handling of the limits of real-time interaction.
+
+#### Documentation and presentation
+
+Your submission should make the design easy to understand and review. Clear setup instructions, supporting documentation, screenshots, and a short demo help assessors evaluate the project quickly and fairly.

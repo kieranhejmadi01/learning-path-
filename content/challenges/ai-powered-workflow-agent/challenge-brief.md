@@ -27,3 +27,23 @@ This challenge is a good fit if you want to improve in one or more of these area
 - Tool calling and workflow orchestration
 - Secure sandbox design
 - LLM deployment on Arm systems
+
+## Assessment criteria
+
+Submissions are assessed using broad criteria that reflect both technical quality and practical usefulness.
+
+#### Use of Arm technology
+
+Your submission should show a clear and meaningful use of Arm-based hardware or software. Strong entries explain why Arm is a good fit for the solution and demonstrate that the agent runtime, model workflow, or supporting tools run effectively on Arm platforms.
+
+#### Novelty
+
+Assessors look for original thinking in the problem you choose, the way you structure the workflow, or the way you combine models and tools. Novelty does not need to mean a completely new idea, but your solution should show a distinctive approach or a thoughtful improvement on existing patterns.
+
+#### Code quality and robustness
+
+Your implementation should be clear, maintainable, and reliable. Strong submissions handle errors well, define sensible boundaries for agent actions, and show evidence that the system can perform the intended workflow consistently.
+
+#### Documentation and reproducibility
+
+Your project should be easy for others to understand, set up, and evaluate. Clear documentation, reproducible steps, and a concise explanation of inputs, outputs, and assumptions help reviewers validate the work efficiently.
