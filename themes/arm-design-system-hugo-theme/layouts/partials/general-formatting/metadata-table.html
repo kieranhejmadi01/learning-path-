@@ -21,6 +21,7 @@ Called from:
 {{$is_challenge := false}}
 {{$table_name := "Install Guide"}}
 {{$challenge_deadline := .Params.challenge_deadline | default "There is no deadline, so you can start and complete the challenge at your convenience."}}
+{{$challenge_prize := .Params.challenge_prize | default "Standout submissions can be featured on this website as formal recognition from Arm, giving you an achievement you can reference on LinkedIn and on your CV."}}
 
 <!-- Trial new IG title structure for SEO optimization -->
 {{$seo_pages := slice "AWS CLI" "Anaconda" "Chromium" "CMake" "Docker Desktop" "Docker for Windows on Arm" "AWS EKS CLI (eksctl)" "Google Cloud Platform (GCP) CLI" "Hyper-V on Arm" "Kubectl" "NoMachine" "Ansible" "AWS Credentials"}}
@@ -153,6 +154,39 @@ Called from:
                             {{end}}
                         </td>
                     </tr>
+                    <tr>
+                        <td class="td-metadata-key nowrap">
+                            {{if eq (len $authors) 1}}Author:{{else}}Authors:{{end}}
+                        </td>
+                        <td id="author" class="td-metadata-value">
+                            {{- range $authors -}}
+                                {{ $metadata := index $author_data . | default dict }}
+                                <span>
+                                    {{.}}
+                                    {{- range $key, $value := $metadata -}}
+                                        {{- with $value -}}
+                                            {{- if eq $key "company" -}}
+                                                <span class="u-margin-right-1/2">, {{$value}}</span>
+                                            {{- end -}}
+                                            {{ if eq $key "github" }}
+                                                <a href="{{ . }}" target="_blank" aria-label="github"><i class="author-social-icon fab fa-github"></i></a>
+                                            {{end}}
+                                            {{ if eq $key "linkedin" }}
+                                                <a href="{{ . }}" target="_blank" aria-label="linkedin"><i class="author-social-icon fab fa-linkedin"></i></a>
+                                            {{end}}
+                                            {{ if eq $key "twitter" }}
+                                                <a href="{{ . }}" target="_blank" aria-label="twitter"><i class="author-social-icon fab fa-twitter"></i></a>
+                                            {{end}}
+                                            {{ if eq $key "website" }}
+                                                <a href='{{if in . "http"}}{{. | safeURL}}{{else}}https://{{. | safeURL}}{{end}}' target="_blank" aria-label="author-social"><i class="author-social-icon fa  fa-blog"></i></a>
+                                            {{end}}
+                                        {{ end }}
+                                    {{ end }}
+                                </span>
+                                <br>
+                            {{- end -}}
+                        </td>
+                    </tr>
                     {{if and (not $is_learning_path) .Params.ecosystem_dashboard}}
                     <tr>
                         <td class="td-metadata-key nowrap">
@@ -207,6 +241,42 @@ Called from:
                             {{end}}
                         </td>
                     </tr>
+                    <tr>
+                        <td class="td-metadata-key width-max-content">
+                            {{if eq (len $authors) 1}}Author:{{else}}Authors:{{end}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="author" class="td-metadata-value margin-l-24">
+                            <ul>
+                                {{- range $authors -}}
+                                    {{ $metadata := index $author_data . | default dict }}
+                                    <li>
+                                        {{.}}
+                                        {{- range $key, $value := $metadata -}}
+                                            {{- with $value -}}
+                                                {{- if eq $key "company" -}}
+                                                    <span class="u-margin-right-1/2">, {{$value}}</span>
+                                                {{- end -}}
+                                                {{ if eq $key "github" }}
+                                                    <a href="{{ . }}" target="_blank" aria-label="github"><i class="author-social-icon fab fa-github"></i></a>
+                                                {{end}}
+                                                {{ if eq $key "linkedin" }}
+                                                    <a href="{{ . }}" target="_blank" aria-label="linkedin"><i class="author-social-icon fab fa-linkedin"></i></a>
+                                                {{end}}
+                                                {{ if eq $key "twitter" }}
+                                                    <a href="{{ . }}" target="_blank" aria-label="twitter"><i class="author-social-icon fab fa-twitter"></i></a>
+                                                {{end}}
+                                                {{ if eq $key "website" }}
+                                                    <a href='{{if in . "http"}}{{. | safeURL}}{{else}}https://{{. | safeURL}}{{end}}' target="_blank" aria-label="author-social"><i class="author-social-icon fa  fa-blog"></i></a>
+                                                {{end}}
+                                            {{ end }}
+                                        {{ end }}
+                                    </li>
+                                {{- end -}}
+                            </ul>
+                        </td>
+                    </tr>
                     {{if and (not $is_learning_path) .Params.ecosystem_dashboard}}
                     <tr>
                         <td class="td-metadata-key width-max-content">
@@ -227,46 +297,21 @@ Called from:
             <!-- Normal view (not mobile) -->
             <div class="u-hide md:u-display-block u-flex-shrink-0">
                 <table class="width-max-content">
-                    <tr>
-                        <td class="td-metadata-key width-max-content nowrap">
-                            {{if eq (len $authors) 1}}Author:{{else}}Authors:{{end}}
-                        </td>
-                        <td id="author" class="td-metadata-value">
-                            {{- range $authors -}}
-                                {{ $metadata := index $author_data . | default dict }}
-                                <span>
-                                    {{.}}
-                                    {{- range $key, $value := $metadata -}}
-                                        {{- with $value -}} {{/* if value exists */}}
-                                            {{- if eq $key "company" -}}
-                                                <span class="u-margin-right-1/2">, {{$value}}</span>
-                                            {{- end -}}
-                                            {{ if eq $key "github" }}
-                                                <a href="{{ . }}" target="_blank" aria-label="github"><i class="author-social-icon fab fa-github"></i></a>
-                                            {{end}}
-                                            {{ if eq $key "linkedin" }}
-                                                <a href="{{ . }}" target="_blank" aria-label="linkedin"><i class="author-social-icon fab fa-linkedin"></i></a>
-                                            {{end}}
-                                            {{ if eq $key "twitter" }}
-                                                <a href="{{ . }}" target="_blank" aria-label="twitter"><i class="author-social-icon fab fa-twitter"></i></a>
-                                            {{end}}
-                                            {{ if eq $key "website" }}
-                                                <a href='{{if in . "http"}}{{. | safeURL}}{{else}}https://{{. | safeURL}}{{end}}' target="_blank" aria-label="author-social"><i class="author-social-icon fa  fa-blog"></i></a>
-                                            {{end}}
-                                        {{ end }}
-                                    {{ end }}
-                                </span>
-                                <br>
-                            {{- end -}}
-                        </td>
-                    </tr>
                     {{if $is_challenge}}
                     <tr>
                         <td class="td-metadata-key width-max-content nowrap">
-                            Challenge deadline:
+                            Deadline:
                         </td>
                         <td id="challenge-deadline" class="td-metadata-value">
                             <span><i class="fa-light fa-flag-checkered fa-sm"></i></span>&nbsp; {{$challenge_deadline}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-metadata-key width-max-content nowrap" style="padding-top: 10px;">
+                            Prize:
+                        </td>
+                        <td id="challenge-prize" class="td-metadata-value" style="padding-top: 10px;">
+                            <span><i class="fa-light fa-award fa-sm"></i></span>&nbsp; {{$challenge_prize}}
                         </td>
                     </tr>
                     {{end}}
@@ -356,52 +401,25 @@ Called from:
             <!-- Table mobile-sized windows only -->
             <div class="md:u-hide u-display-block">
                 <table>
-                    <tr>
-                        <td class="td-metadata-key width-max-content">
-                            {{if eq (len $authors) 1}}Author:{{else}}Authors:{{end}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="author" class="td-metadata-value margin-l-24">
-                            <ul>
-                                {{- range $authors -}}
-                                    {{/* {{if eq (len $authors) 1}} */}}
-                                    {{ $metadata := index $author_data . | default dict }}
-                                    <li>
-                                        {{.}}
-                                        {{- range $key, $value := $metadata -}}
-                                            {{- with $value -}} {{/* if value exists */}}
-                                                {{- if eq $key "company" -}}
-                                                    <span class="u-margin-right-1/2">, {{$value}}</span>
-                                                {{- end -}}
-                                                {{ if eq $key "github" }}
-                                                    <a href="{{ . }}" target="_blank" aria-label="github"><i class="author-social-icon fab fa-github"></i></a>
-                                                {{end}}
-                                                {{ if eq $key "linkedin" }}
-                                                    <a href="{{ . }}" target="_blank" aria-label="linkedin"><i class="author-social-icon fab fa-linkedin"></i></a>
-                                                {{end}}
-                                                {{ if eq $key "twitter" }}
-                                                    <a href="{{ . }}" target="_blank" aria-label="twitter"><i class="author-social-icon fab fa-twitter"></i></a>
-                                                {{end}}
-                                                {{ if eq $key "website" }}
-                                                    <a href='{{if in . "http"}}{{. | safeURL}}{{else}}https://{{. | safeURL}}{{end}}' target="_blank" aria-label="author-social"><i class="author-social-icon fa  fa-blog"></i></a>
-                                                {{end}}
-                                            {{ end }}
-                                        {{ end }}
-                                    </li>
-                                {{- end -}}
-                            </ul>
-                        </td>
-                    </tr>
                     {{if $is_challenge}}
                         <tr>
                             <td class="td-metadata-key width-max-content">
-                                Challenge deadline:
+                                Deadline:
                             </td>
                         </tr>
                         <tr>
                             <td id="challenge-deadline" class="td-metadata-value margin-l-24">
                                 <span><i class="fa-light fa-flag-checkered fa-sm"></i></span>&nbsp; {{$challenge_deadline}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-metadata-key width-max-content" style="padding-top: 10px;">
+                                Prize:
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="challenge-prize" class="td-metadata-value margin-l-24" style="padding-top: 10px;">
+                                <span><i class="fa-light fa-award fa-sm"></i></span>&nbsp; {{$challenge_prize}}
                             </td>
                         </tr>
                     {{end}}
@@ -501,8 +519,6 @@ Called from:
         </div>
         {{if and (not $is_learning_path) (not $is_challenge)}}
             <p style="margin-top: 24px;">This guide shows you how to install and use the tool with the most common configuration. For advanced options and complete reference information, see the official documentation. Some install guides also include optional next steps to help you explore related workflows or integrations.</p>
-        {{else if $is_challenge}}
-            <p style="margin-top: 24px;">This challenge outlines an open-ended Arm development problem and gives you a starting point for building your own solution. Use the resources and deliverables as guidance, then adapt the implementation to your goals.</p>
         {{end}}
     </div>
 </div>

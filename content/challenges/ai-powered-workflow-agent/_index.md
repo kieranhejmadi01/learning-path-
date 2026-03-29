@@ -14,6 +14,16 @@ operatingsystems:
     - Linux
     - macOS
     - Windows
+challenge_prize: ""
+community_attempts:
+  - link: "https://github.com/egkoppel/example-papers"
+    title: "Mathematics Questions Solver"
+    author: "Ronak De et. al"
+    summary: "AI Agent to solve mathematics problems from University of Cambridge and create explanatory visualizations in manim"
+  - link: "https://github.com/BillLeoutsakosvl346/ElectroNinjaRefined"
+    title: "ElectroNinja: A cursor for electrical engineers"
+    author: "Bill Leuotsakov et. al"
+    summary: "ElectroNinja is an advanced AI-powered application that functions as an electrical engineer. It interprets user requests, generates circuit descriptions, creates LTSpice ASC code, and iteratively refines circuit designs using a combination of GPT-based language models, a vision analysis module, and LTSpice simulation."
 challenge: true
 multi_challenge: false
 multichallenge_part: false
