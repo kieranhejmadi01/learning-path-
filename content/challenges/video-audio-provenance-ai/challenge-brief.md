@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Build and evaluate a provenance-aware media pipeline on an Arm-powered device that:
 

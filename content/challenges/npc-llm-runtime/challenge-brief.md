@@ -4,7 +4,7 @@ weight: 2
 layout: challengeall
 ---
 
-## Define the challenge
+## The challenge
 
 Propose and implement a novel method of using LLMs to control or interact with NPCs during runtime.
 
