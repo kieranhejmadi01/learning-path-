@@ -26,7 +26,6 @@ Add your entry under `community_attempts` using this pattern:
 
 ```yaml
 community_attempts:
-
   - link: ""
     title: ""
     author: ""

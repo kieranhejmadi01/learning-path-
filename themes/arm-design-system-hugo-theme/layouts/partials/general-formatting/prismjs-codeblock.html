@@ -86,7 +86,6 @@ Called from:
         {{else}}
             {{- with .code -}}
                 {{- $inner := split . "\n" -}}
-                &#10;
                 {{- range $inner -}}
                     {{- . -}}&#10;
                 {{- end -}}

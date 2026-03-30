@@ -66,7 +66,7 @@ Called from:
 {{end}}
 
 <!-- Content pages only that are not _index, _next-steps, or _review -->
-{{if and $is_content (not (hasPrefix .File.TranslationBaseName "_"))}}
+{{if and $is_content (or (not (hasPrefix .File.TranslationBaseName "_")) (eq .Layout "challengeall"))}}
     <script src="/js/prism.js" defer></script>                        <!-- Include code highlighting javascript, Prism-->
     <script src="/js/prism_post_output_formating.js" defer></script>  <!-- must be called after prism.js to modify it once rendered -->
 {{end}}
