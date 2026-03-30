@@ -87,7 +87,7 @@ Where it is used:
         | resources.Concat "css/mini_content.css" | minify | fingerprint  }}
     <link rel="stylesheet" href="{{ $css_content.Permalink }}">
 {{end}}
-{{if and $is_content (not (hasPrefix .File.TranslationBaseName "_"))}}
+{{if and $is_content (or (not (hasPrefix .File.TranslationBaseName "_")) (eq .Layout "challengeall"))}}
     <!-- already minified, and need the ID to change it as appropritate by theme 
     <link id="prism-code-theme" href="/css/prism-dark.css" rel="stylesheet" media="print" onload="this.media='all'" />
     <link href="/css/prism-added-styles.css" rel="stylesheet" media="print" onload="this.media='all'" />

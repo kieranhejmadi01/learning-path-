@@ -15,10 +15,10 @@ Add your entry under `community_attempts` using this pattern:
 
 ```yaml
 community_attempts:
-	- link: ""
-		title: ""
-		author: ""
-		summary: ""
+  - link: ""
+    title: ""
+    author: ""
+    summary: ""
 ```
 
 - Use the same quoted string format for `link`, `title`, `author`, and `summary`.
