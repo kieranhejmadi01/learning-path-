@@ -1,47 +1,55 @@
 ---
 title: Accelerate Random Number Generation with OpenRNG and Performix
+description: Learn how to profile an example C++ data-processing workload on Arm Linux with Arm Performix, then accelerate random distribution generation using OpenRNG and Arm Performance Libraries.
 
-minutes_to_complete: 10
+minutes_to_complete: 45
 
-who_is_this_for: PLACEHOLDER SENTENCE
+who_is_this_for: This Learning Path is for C++ developers on Arm Linux who want to use profiling data to target optimization and speed up random number generation.
 
 learning_objectives: 
-    - PLACEHOLDER OBJECTIVE 1
-    - PLACEHOLDER OBJECTIVE 2
+    - Build and run a baseline C++ data-processing workload on Arm Linux
+    - Use Arm Performix Code Hotspots to identify the highest-impact optimization target
+    - Build the workload with OpenRNG and Arm Performance Libraries
+    - Validate speedups with a microbenchmark sweep across multiple data sizes
 
 prerequisites:
-    - PLACEHOLDER PREREQ 1
-    - PLACEHOLDER PREREQ 2
+    - An Arm Linux (aarch64) system, such as AWS Graviton
+    - Basic C++ and CMake knowledge
+    - Git, CMake, GCC, and Python 3 installed
 
-author: PLACEHOLDER NAME
+author: Kieran Hejmadi
 
 ### Tags
-skilllevels: PLACEHOLDER SKILLLEVEL
-subjects: PLACEHOLDER SUBJECT
+skilllevels: Introductory
+subjects: Performance and Architecture
 armips:
-    - PLACEHOLDER IP A
-    - PLACEHOLDER IP B
+    - Neoverse
 tools_software_languages:
-    - PLACEHOLDER TOOL OR SOFTWARE C
-    - PLACEHOLDER TOOL OR SOFTWARE D
+    - C++
+    - CMake
+    - Arm Performix
+    - OpenRNG
+    - Arm Performance Libraries
 operatingsystems:
-    - PLACEHOLDER OS G
-
-
+    - Linux
 
 further_reading:
     - resource:
-        title: PLACEHOLDER MANUAL 
-        link: PLACEHOLDER MANUAL LINK
+        title: Install Arm Performix
+        link: https://learn.arm.com/install-guides/performix/
         type: documentation
     - resource:
-        title: PLACEHOLDER BLOG 
-        link: PLACEHOLDER BLOG LINK
-        type: blog
+        title: Install Arm Performance Libraries
+        link: https://learn.arm.com/install-guides/armpl/
+        type: documentation
     - resource:
-        title: PLACEHOLDER GENERAL WEBSITE 
-        link: PLACEHOLDER GENERAL WEBSITE LINK
-        type: website
+        title: OpenRNG project repository
+        link: https://gitlab.arm.com/libraries/openrng
+        type: documentation
+    - resource:
+        title: Find Code Hotspots with Arm Performix
+        link: https://learn.arm.com/learning-paths/servers-and-cloud-computing/cpu_hotspot_performix/
+        type: documentation
 
 
 
