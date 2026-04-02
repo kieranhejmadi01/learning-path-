@@ -15,7 +15,6 @@ learning_objectives:
 prerequisites:
     - An Arm Linux (aarch64) system, such as AWS Graviton
     - Basic C++ and CMake knowledge
-    - Git, CMake, GCC, and Python 3 installed
 
 author: Kieran Hejmadi
 
