@@ -8,13 +8,17 @@ layout: learningpathall
 
 ## Accelerate Hotspot with OpenRNG and Arm Performance Libraries
 
-Arm Performance Libraries is a set of numerical routines tuned specifically for Arm processors, covering BLAS, LAPACK, FFT, sparse linear algebra, random number generation, and optimized math and string functions.
+In this step, you replace the baseline random-number path with OpenRNG from Arm Performance Libraries.
 
-OpenRNG provides a Vector Statistical Library (VSL) API for high-throughput random number generation. The OpenRNG interface mirrors the Intel oneMKL VSL RNG interface, so your call sites stay the same when you move between x86 and AArch64 builds. See the [OpenRNG developer reference guide](https://developer.arm.com/documentation/101004/2601/Open-Random-Number-Generation-Reference-Guide/RNG-Introduction/An-overview-of-OpenRNG?lang=en) for more information.
+Arm Performance Libraries includes numerical routines tuned for Arm processors. Those Arm-tuned routines can speed up execution by reducing overhead and improving throughput for compute-heavy kernels.
 
-VSL matters here because it generates many samples in bulk through a stream object. That approach reduces per-sample overhead and improves throughput for this example workload on Arm servers.
+OpenRNG is the random-number component in Arm Performance Libraries. It exposes a Vector Statistical Library (VSL) API, where *VSL* means generating distributions in vector form (many values per call) instead of one sample at a time.
 
-Because OpenRNG is API-compatible with the Intel VSL RNG interface, you can keep the same distribution calls across architectures without rewriting workload logic but updating preprocessor macros. In `src/vec1d.cpp`, the `USE_ARMPL` macro controls which implementation is compiled. In this project, enabling `USE_ARMPL` selects the AArch64 OpenRNG path:
+This Learning Path uses that vector API to generate Gaussian values in bulk. Bulk generation through a stream object lowers per-sample overhead, which is why this section can reduce runtime in the hotspot.
+
+OpenRNG is API-compatible with the Intel oneMKL VSL RNG interface, so distribution call sites remain familiar when you move between x86 and AArch64 builds. You mainly switch build configuration, not workload logic. See the [OpenRNG developer reference guide](https://developer.arm.com/documentation/101004/2601/Open-Random-Number-Generation-Reference-Guide/RNG-Introduction/An-overview-of-OpenRNG?lang=en) for details.
+
+In `src/vec1d.cpp`, the `USE_ARMPL` macro controls which implementation is compiled. In this project, enabling `USE_ARMPL` selects the AArch64 OpenRNG path:
 
 ```cpp
 #if USE_ARMPL
@@ -27,7 +31,7 @@ Because OpenRNG is API-compatible with the Intel VSL RNG interface, you can keep
 #endif
 ```
 
-The OpenRNG path creates one VSL stream and fills a contiguous buffer for both coordinates. `count` is set to `2 * v.getSize()` because each point has `x` and `y` values:
+The OpenRNG path creates one VSL stream and fills a contiguous buffer for both coordinates. `count` is `2 * v.getSize()` because each point has `x` and `y` values:
 
 ```cpp
 VSLStreamStatePtr stream;
@@ -37,7 +41,7 @@ const int count = 2 * v.getSize();
 std::vector<float> tmp(count);
 ```
 
-For Gaussian generation, the code calls the single-precision VSL API `vsRngGaussian` (often referred to as the VSL RNG Gaussian routine). Here, `param_a` is the mean and `param_b` is the standard deviation:
+For Gaussian generation, the code calls the single-precision VSL routine `vsRngGaussian`. Here, `param_a` is the mean and `param_b` is the standard deviation:
 
 ```cpp
 vsRngGaussian(
@@ -64,11 +68,11 @@ vslDeleteStream(&stream);
 
 
 
-Build the accelerated variant:
+Now build and run the accelerated variant:
 
 ```bash
 make clean
-cmake -S . -B build -DUSE_APL=1
+cmake -S . -B build -DUSE_ARMPL=1
 cmake --build build --target main_with_apl
 ./build/src/main_with_apl
 ```
@@ -90,7 +94,7 @@ Alternatively, if using the CLI, you can pass in the environment variable with t
 
 {{% /notice %}}
 
-The flame graph shows main, but the Arm Performance Libraries (including openRNG) do not appear above it. Instead, most samples are attributed to dynamic loader functions (e.g., _dl_*), indicating missing symbol resolution. This commonly happens on Linux when using pre-built shared libraries (*.so) without debug symbols. The profiler cannot resolve internal library calls, so stacks appear truncated.
+The flame graph shows `main`, but Arm Performance Libraries functions (including OpenRNG) do not appear above it. Instead, most samples are attributed to dynamic loader functions (for example, `_dl_*`), which indicates missing symbol resolution. This often happens on Linux when pre-built shared libraries (`*.so`) do not include debug symbols. The profiler cannot resolve internal library calls, so stacks appear truncated.
 
 To fix this, rebuild openRNG from source with debug information enabled (e.g., -g), so the library functions show up correctly above main.
 
