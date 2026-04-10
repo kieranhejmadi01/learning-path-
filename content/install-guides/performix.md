@@ -26,7 +26,7 @@ layout: installtoolsall
 ---
 
 Arm Performix is a desktop application that provides performance
-analysis and profiling for Arm-based Linux systems. Arm Performix connects to remote Arm
+analysis and profiling for Arm-based Linux systems. Arm Performix connects to remote or local Arm
 Linux targets via SSH and provides a graphical interface for capturing and
 analyzing performance data using hardware performance counters and the top-down
 methodology.
@@ -172,7 +172,7 @@ Wait while the installer copies the files.
 
 When the installation finishes, select **Close** to exit the installer.
 
-## How do I prepare my target for Arm Performix connections?
+## How do I prepare my remote target for Arm Performix connections?
 
 Before connecting to an Arm Linux target, ensure SSH key-based authentication is configured and that passwordless sudo access is enabled. If you already manage your target system via SSH, you likely have most of this setup complete.
 
@@ -227,6 +227,8 @@ sudo visudo
 ```
 
 Add the following line, replacing `<username>` with your actual username:
+
+Place this line after any other entries that reference the same user or any groups the user belongs to, as rule order in the sudoers file affects precedence.
 
 ```bash
 <username> ALL=(ALL) NOPASSWD:ALL
@@ -286,6 +288,19 @@ Provide the jump node details:
 Select **Add** to save the jump node.
 
 You can add multiple jump nodes. The order matters—your connection uses them in sequence. Use drag and drop to reorder jump nodes.
+
+#### Connect using the Arm Performix GUI to a local machine
+
+Performix already includes a built-in `localhost` target through the CLI. However, as of Performix 2026.01, this target is not exposed in the GUI. If you prefer the command line, you can run recipes directly without configuring the target through the GUI. [Skip to the profile the local machine section](#profile-the-local-machine) below. 
+
+If you want to target your local machine conveniently through the GUI, use `localhost` in place of `target_host` and select **Username and password** as the authentication method, as shown in the following image. Make sure passwordless `sudo` is enabled for your user account.
+
+
+![Arm Performix GUI showing the Configure Target form for a local connection using 'localhost', including Host set to localhost, Name field for a custom label, Port set to 22, User set to the local username, authentication set to Username and password, and Host Key Verification options#center](/install-guides/_images/connect-via-local-host.png "Configure local target using localhost in Arm Performix GUI")
+
+Enter the password for your user when prompted
+
+![Arm Performix GUI displaying a password prompt dialog requesting the user's system password for authentication, including a password input field, confirmation button, and context indicating connection to a localhost target#center](/install-guides/_images/performix-add-passwrd.png "Enter user password for localhost authentication in Arm Performix")
 
 ### Connect using the Arm Performix CLI
 
