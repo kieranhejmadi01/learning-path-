@@ -6,15 +6,20 @@ weight: 2
 layout: learningpathall
 ---
 
-## Refresher on CPU Memory Hierarchy
+## Review the memory hierarchy
 
-This learning path assumes you have a basic understanding of memory hierarchy in modern systems. This page is not meant to be an extensive explanation but a quick refresher of some of the memory concepts covered in this learning path. Modern CPUs use a cache hierarchy. You typically see:
+This learning path assumes you have a fundamental understanding of memory hierarchy. As such, this is not meant as an exhausive explanation but instead a recap focusing on the concepts discussed in the later worked example. 
 
-- L1 data cache (`L1d`) and L1 instruction cache (`L1i`) per core
-- L2 cache, often private per core
-- Last-level cache (LLC), often an L3 cache shared across cores
+Modern Arm server CPUs use a hierarchy of memories to reduce the cost of loading and storing data. The fastest storage sits close to each CPU core, while larger memories sit farther away and take more cycles to access.
 
-You can inspect your system cache hierarchy with the following command:
+You typically see:
+
+- L1 data cache (`L1d`) and L1 instruction cache (`L1i`) close to each core. This may use the virtual address
+- L2 cache, often private to each core.
+- Last-level cache, often shared across multiple cores.
+- DRAM, which is much larger but much slower than on-chip cache.
+
+You can inspect cache topology on a Linux system with:
 
 ```bash
 lscpu | grep -i cache
@@ -29,34 +34,53 @@ L2 cache:                                64 MiB (64 instances)
 L3 cache:                                32 MiB (1 instance)
 ```
 
-In this example we are using an AWS Graviton 3 instance based on the Neoverse V1 architecture. Each core has its own L1 and L2 caches (64 instances), while L3 is shared (1 instance across the system).
+For a more visual view, install `hwloc` and generate a topology image:
 
-L1 data cache is the first level your core checks for load and store data. If your hot loop has strong locality and good cache line utilization, many accesses resolve quickly in L1.
+```bash
+sudo apt update
+sudo apt install -y hwloc
+hwloc-ls --of png > topology.png
+```
 
-When L1 hit rate drops, your code waits on deeper levels (L2 or DRAM), and latency rises.
+![Hardware locality topology showing per-core cache and shared system resources#center](./topology.png "Example hardware locality topology")
 
-Working set size also matters. The working set is the amount of code and data your application actively touches over a period of execution. If the working set is larger than available cache capacity, cache misses increase because lines are evicted before reuse. 
+The graphic above illustrates the size and access of different cache tiers on an AWS Graviton 3 metal instance, based on the Neoverse V1 architecture. Here we observe each of the 64 cores has private, `L1d`, `L1i` and `L2` cache, with all 64 cores sitting in the same cluster with shared `L3` cache (last level cache). Cache sizes, typically later levels, are not fixed by the Neoverse architecture version; implementers such as AWS or Google can configure more or less cache depending on their design goals. 
 
-## TLB misses and page walks
+NUMA, or non-uniform memory access, means memory access latency can depend on which processor or socket owns the memory being accessed, for this AWS Graviton 3 instance there is only a single NUMA mode.
 
-The translation lookaside buffer (TLB) caches virtual-to-physical page translations. A TLB miss means the processor must perform a page table walk to resolve the address before the data access can complete.
+Ideally, the working set, which is the data a program actively touches during a period of execution, or the resident set size (RSS), which is the physical memory currently resident for a process, fits within the lowest practical cache tier for lowest ltency. 
 
-Frequent TLB misses and page walks increase memory access latency, especially for large working sets with poor spatial locality.
+ On multi-threaded workloads, also consider how multiple cores read and write shared data so you can avoid issues such as false sharing. For more information, see [Learn how false sharing impacts application performance using Arm SPE](https://learn.arm.com/learning-paths/servers-and-cloud-computing/false-sharing-arm-spe/).
 
-If data is not found in cache, accesses continue toward DRAM. DRAM has much higher latency than on-chip caches, so cache misses and translation overhead can dominate runtime even when the compute loop is simple.
+ If you would like a comprehensive understanding of the memory subsystem, review our learning path on the [Arm system characterisation tool](https://learn.arm.com/learning-paths/servers-and-cloud-computing/memory-subsystem/).
 
-Some applications do not fit neatly into cache by design, especially with large datasets or irregular access patterns. In multithreaded code, additional unintentional effects such as false sharing can also reduce cache efficiency. For a focused walkthrough, see:
+## Overview of the Memory Management Unit (MMU) 
 
-- [Analyze false sharing with Arm SPE](https://learn.arm.com/learning-paths/servers-and-cloud-computing/false-sharing-arm-spe/)
+Applications use virtual addresses, which are the memory addresses a program sees rather than the actual locations in physical DRAM. Virtual addressing lets the operating system isolate processes, protect memory, and map each program's address space onto available physical memory. The processor translates virtual addresses to physical addresses before it can access memory. The translation lookaside buffer (TLB) caches recent virtual-to-physical translations on a page level to avoid time spent performing a page table walk.
 
-## Why data layout changes these metrics
+A TLB miss occurs when the needed translation is not already cached.  The processor then performs a page table walk to find the mapping. Page walks add latency before the load or store can complete. Large working sets and irregular access patterns, such as accessing data a strides greater than the typical 4KB page size can increase TLB pressure because the program touches many pages with little reuse.
 
-Modern CPUs depend heavily on the memory hierarchy—caches, TLBs, and hardware prefetchers—to achieve high performance. Compilers can reorder accesses and improve locality to some extent, but they cannot fix fundamentally poor data layout or access patterns. If your program has low spatial or temporal locality, scattered allocations, or excessive pointer indirection, it will incur more cache misses, TLB misses, and memory latency. In such cases, performance is limited not by compute, but by how efficiently data moves through the memory system.
+The working set is the data your program actively touches during a period of execution. It differs from resident set size (RSS), which is the amount of physical memory currently resident for a process. A process can have a large RSS while the hot loop actively uses only a smaller working set.
 
-## Summary
+From a programmer's perspective, much of the cache and memory subsystem is a black box defined by the processor architecture and implementation. Features such as cache associativity, prefetching, and translation caching are designed to hide latency across a wide range of workloads. The main software levers are therefore to shape memory access through data structure layout, allocation patterns, and choices such as page size.
 
-Memory access behavior can be complex, and optimization decisions need observability from a running workload rather than assumptions from source code alone.
+## Connect data structures to memory behavior
 
-Linux provides low-level performance tools, but there is a learning curve in both collecting the right data and interpreting the results correctly. The Performix Memory Access recipe exists to streamline that workflow and present memory-focused evidence in a structured way.
+The layout of your C++ data structures can determine whether the memory hierarchy helps or hurts runtime. The compiler generally cannot reorganize structure fields or split objects automatically because doing so would change the semantic meaning of the program. 
 
-In the next section, you build the workload and prepare a reproducible run. Then you use Arm Performix through MCP to gather memory-access-specific evidence in one workflow.
+Common causes of poor memory access behavior include:
+
+- Storing hot fields together with cold fields in a large structure.
+- Allocating many small objects separately on the heap.
+- Storing raw pointers in a container and following one pointer per loop iteration.
+- Touching data with little spatial locality or temporal locality.
+
+When a loop updates only a few fields but each object occupies a full cache line, useful bandwidth drops. The processor fetches the cache line, but the loop consumes only part of it before moving to the next object. If the objects also live in separate heap allocations, the pointer array and the pointed-to objects both add memory traffic.
+
+## Tools to assess memory performance
+
+A naive method to assess the overall memory access behaviour of a linux program could be a high-level tool such as `/usr/bin/time` or a low-level profiler such as `perf`.
+
+Manual `perf` analysis is flexible, but it requires you to choose events, run the correct commands, and interpret several outputs together.
+
+The Arm Performix Memory Access recipe packages this workflow for memory-focused analysis. In this Learning Path, you run that recipe through the Arm MCP Server so an AI coding assistant can launch the remote profile and return structured results.

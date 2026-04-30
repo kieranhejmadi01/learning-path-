@@ -1,30 +1,29 @@
 ---
-title: Run memory access analysis with Performix and MCP
+title: Run memory access analysis with Arm Performix and MCP
 
-description: Learn how to profile memory behavior in a C++ particle simulation on Arm Linux using the Performix Memory Access recipe through the Arm MCP Server.
+description: Learn how to profile memory access behavior in a C++ particle simulation on Arm Linux using the Arm Performix Memory Access recipe through the Arm MCP Server.
 
 minutes_to_complete: 45
 
-who_is_this_for: This is an introductory topic for intermediate C++ developers with basic cache and virtual-memory knowledge who want to diagnose cache and TLB bottlenecks with Arm Performix and MCP.
+who_is_this_for: This is an advanced topic for intermediate C++ developers who want to use Arm Performix and the Arm MCP Server to diagnose cache and translation behavior in applications running on Arm Neoverse systems.
 
 learning_objectives:
-  - Explain how L1 cache behavior, translation lookaside buffer misses, and page walks affect runtime
-  - Build and run the orbiting galaxies workload without using helper build scripts
-  - Use Arm MCP to run the Performix Memory Access recipe on a remote Arm target
-  - Identify data layout risks in an Array-of-Structures implementation before optimization
+  - Explain how L1 cache hits, TLB misses, and page walks affect C++ application runtime.
+  - Build and visualize the orbiting galaxies example on an Arm Linux target.
+  - Inspect a particle data structure for memory access risks before making code changes.
+  - Run the Arm Performix Memory Access recipe through the Arm MCP Server.
 
 prerequisites:
-  - Basic C++ development experience
-  - Basic understanding of cache hierarchy and virtual memory translation
-  - Access to a remote Arm Linux server with Arm MCP Server configured
-  - "Arm Performix installed (see placeholder install guide: [Install Arm Performix](https://learn.arm.com/install-guides/performix-placeholder/))"
-  - Git, CMake, a C++ compiler toolchain, and Python 3 installed
-  - Familiarity with terminal-based workflows
+  - Access to an Arm Neoverse-based Linux server.
+  - Arm Performix installed and configured for the remote target. See the [Arm Performix install guide](https://learn.arm.com/install-guides/performix/).
+  - Arm MCP Server configured in your AI coding assistant.
+  - Basic C++ development experience.
+  - Familiarity with the Linux command line.
 
 author: Kieran Hejmadi
 
 ### Tags
-skilllevels: Introductory
+skilllevels: Advanced
 subjects: Performance and Architecture
 armips:
   - Neoverse
@@ -32,12 +31,17 @@ tools_software_languages:
   - Arm Performix
   - MCP
   - C++
-  - Linux perf
   - CMake
+  - Python
+  - Linux perf
 operatingsystems:
   - Linux
 
 further_reading:
+  - resource:
+      title: Identify code hotspots using Arm Performix through the Arm MCP Server
+      link: https://learn.arm.com/learning-paths/servers-and-cloud-computing/performix-mcp-agent/
+      type: learning-path
   - resource:
       title: Find Code Hotspots with Arm Performix
       link: https://learn.arm.com/learning-paths/servers-and-cloud-computing/cpu_hotspot_performix/
@@ -62,29 +66,8 @@ layout: "learningpathall"       # All files under learning paths have this same 
 learning_path_main_page: "yes"  # This should be surfaced when looking for related content. Only set for _index.md of learning path content.
 ---
 
-Memory-bound code can look simple and still run slowly. In this Learning Path, you profile a particle simulation where most of the cost comes from memory traffic, not arithmetic.
+Memory-bound code can look computationally simple while still spending most of its time waiting for data. In this Learning Path, you build a C++ particle simulation, inspect the data structure used by the hot loop, and run the Arm Performix Memory Access recipe through the Arm MCP Server.
 
-You focus on three memory hierarchy signals:
+The workload stores particles for an orbiting galaxies simulation. You use it to connect memory hierarchy concepts to source code: how cache line use, pointer indirection, TLB behavior, and page walks can affect runtime even when each loop iteration performs only a few arithmetic operations.
 
-- **L1 cache efficiency**: low L1 hit rates force demand loads to wait on deeper cache levels or DRAM.
-- **TLB pressure**: when the working set spans many pages, translation lookaside buffer misses increase translation overhead.
-- **Page walks**: after a TLB miss, hardware must walk page tables, which adds latency before data access can complete.
-
-The workload uses an Array-of-Structures layout where each particle is 64 bytes but only part of each particle is used in the hot loop. This can inflate bandwidth demand and reduce effective cache utilization.
-
-Before you begin the hands-on steps, install Arm Performix using this placeholder guide link: [Install Arm Performix](https://learn.arm.com/install-guides/performix-placeholder/).
-
-## Manual baseline approach with Linux perf
-
-Before using Performix, you can inspect memory behavior manually with Linux `perf`.
-
-```bash
-# Example baseline run
-perf stat -d -d -d ./build/baseline
-
-# Example sampled profile (function-level)
-perf record -g ./build/baseline
-perf report
-```
-
-Manual `perf` is useful, but it requires event selection, interpretation, and correlation across multiple outputs. The Performix Memory Access recipe packages this workflow and returns memory-focused metrics in one run. In this Learning Path, you execute that recipe through Arm MCP so an AI agent can orchestrate the run and return structured output.
+You start with manual Linux inspection techniques such as `perf`, then use Arm MCP to run the Performix Memory Access recipe on a remote Arm target. Stop after collecting the first memory access profile so you can assess the results before applying improvements.

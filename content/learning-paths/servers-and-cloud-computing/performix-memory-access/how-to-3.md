@@ -16,7 +16,7 @@ Consider how the `Particle` data structure maps to a 64-byte cache line. Also co
 
 {{% /notice %}}
 
-### Use the Arm MCP Server to Make Informed Changes
+### Use the Arm MCP Server for an Agentic solution
 
 The Arm Model Context Protocol (MCP) server has direct tool support to invoke Performix on a remote target. This server integrates into common coding assistants and can provide Arm tool access and performance insights to LLM-based coding assistants. Follow the [install guide](https://learn.arm.com/install-guides/github-copilot/) to install the MCP server with Docker.
 
@@ -76,25 +76,50 @@ void update_positions(ParticlesSoA& p, int n, float dt) {
 
 This removes the `Particle*` indirection and improves cache-line utilization because the hot loop streams through the data it actually uses.
 
-## Measure wall time directly
+## Measure wall time and memory usage directly
 
-Rebuild the project with `-O2 -g` so both binaries are optimized while still retaining debug information for source-level profiling.
-
-Run the binaries directly on the remote machine without Performix:
+Run the binaries directly on the remote machine without Performix to compare both wall time and memory usage:
 
 ```bash
-/home/ubuntu/memory-access/Arm-Total-Performance/build/baseline
-/home/ubuntu/memory-access/Arm-Total-Performance/build/optimized
+/usr/bin/time -v <path to build directory>/baseline
+/usr/bin/time -v <path to build directory>/optimized
 ```
 
-Example output:
+Please note that we have instrumented the hot loop with the `scopedTimer` so we can directly observe the speed up from the change. 
 
 ```output
-Baseline took 569 milliseconds
-Optimized took 270 milliseconds
+Baseline took 571 milliseconds
+        Command being timed: "./build/baseline"
+        User time (seconds): 0.66
+        System time (seconds): 0.02
+        Percent of CPU this job got: 99%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.69
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 92720
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 22655
+...
+Optimized took 279 milliseconds
+        Command being timed: "./build/optimized"
+        User time (seconds): 0.35
+        System time (seconds): 0.02
+        Percent of CPU this job got: 100%
+        Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.37
+        Average shared text size (kbytes): 0
+        Average unshared data size (kbytes): 0
+        Average stack size (kbytes): 0
+        Average total size (kbytes): 0
+        Maximum resident set size (kbytes): 64044
+        Average resident set size (kbytes): 0
+        Major (requiring I/O) page faults: 0
+        Minor (reclaiming a frame) page faults: 15500
 ```
 
-In this run, the baseline took 569 ms and the optimized version took 270 ms. This is about a 2.1x speedup, or a wall-time reduction of about 53%.
+In this run, the baseline took 571 ms and the optimized version took 279 ms, which is about a 2.0x speedup and a wall-time reduction of about 51%. The maximum resident set size also dropped from 92,720 KB to 64,044 KB, a reduction of about 31%. This reduction in RSS is because the optimized Struct of Arrays layout eliminates per-object allocation overhead and stores only the fields actually needed in contiguous memory.
 
 ## Confirm with Performix
 
