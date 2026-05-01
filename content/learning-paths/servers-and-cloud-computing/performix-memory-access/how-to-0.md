@@ -50,15 +50,23 @@ NUMA, or non-uniform memory access, means memory access latency can depend on wh
 
 Ideally, the working set, which is the data a program actively touches during a period of execution, or the resident set size (RSS), which is the physical memory currently resident for a process, fits within the lowest practical cache tier for lowest ltency. 
 
- On multi-threaded workloads, also consider how multiple cores read and write shared data so you can avoid issues such as false sharing. For more information, see [Learn how false sharing impacts application performance using Arm SPE](https://learn.arm.com/learning-paths/servers-and-cloud-computing/false-sharing-arm-spe/).
+A more considered approach is required when multiple threads are in use, also consider how multiple cores read and write shared data so you can avoid issues such as false sharing. For more information, see [Learn how false sharing impacts application performance using Arm SPE](https://learn.arm.com/learning-paths/servers-and-cloud-computing/false-sharing-arm-spe/).
 
  If you would like a comprehensive understanding of the memory subsystem, review our learning path on the [Arm system characterisation tool](https://learn.arm.com/learning-paths/servers-and-cloud-computing/memory-subsystem/).
 
 ## Overview of the Memory Management Unit (MMU) 
 
-Applications use virtual addresses, which are the memory addresses a program sees rather than the actual locations in physical DRAM. Virtual addressing lets the operating system isolate processes, protect memory, and map each program's address space onto available physical memory. The processor translates virtual addresses to physical addresses before it can access memory. The translation lookaside buffer (TLB) caches recent virtual-to-physical translations on a page level to avoid time spent performing a page table walk.
+Applications use virtual addresses, which are the memory addresses a program sees rather than the actual locations in physical DRAM. Virtual addressing lets the operating system isolate processes, protect memory, and map each program's address space onto available physical memory. The processor translates virtual addresses to physical addresses before it can access memory. 
 
-A TLB miss occurs when the needed translation is not already cached.  The processor then performs a page table walk to find the mapping. Page walks add latency before the load or store can complete. Large working sets and irregular access patterns, such as accessing data a strides greater than the typical 4KB page size can increase TLB pressure because the program touches many pages with little reuse.
+### Translation lookaside buffer (TLB)
+
+The translation lookaside buffer (TLB) caches recent virtual-to-physical translations on a page level to avoid time spent performing a page table walk. A TLB miss occurs when the needed translation is not already cached.  The processor then performs a page table walk to find the mapping. Page walks add latency before the load or store can complete. Large working sets and irregular access patterns, such as accessing data a strides greater than the typical 4KB page size can increase TLB pressure because the program touches many pages with little reuse.
+
+### Page Faults
+
+A minor page fault is usually harmless: the data is already in RAM, and the kernel just creates the mapping, which commonly happens during anonymous paging when Linux lazily backs newly allocated heap/stack memory on first touch. A major page fault is more expensive because the kernel must fetch the page from disk, such as from a file or swap, so repeated major faults are usually a real performance concern.
+
+### Working size
 
 The working set is the data your program actively touches during a period of execution. It differs from resident set size (RSS), which is the amount of physical memory currently resident for a process. A process can have a large RSS while the hot loop actively uses only a smaller working set.
 

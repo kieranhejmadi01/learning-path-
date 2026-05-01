@@ -6,7 +6,7 @@ weight: 5
 layout: learningpathall
 ---
 
-## Challenge
+## Optimize Manually
 
 Using the data collected from Performix, refactor the `Particle` data structure to improve the L1 cache hit rate. The baseline result showed that `update_positions()` dominated the samples, had low L1 cache hit rate, and did not suffer from significant TLB walks.
 
@@ -16,11 +16,21 @@ Consider how the `Particle` data structure maps to a 64-byte cache line. Also co
 
 {{% /notice %}}
 
-### Use the Arm MCP Server for an Agentic solution
+### (Optional) Optimize with an agent and the Arm MCP server
 
-The Arm Model Context Protocol (MCP) server has direct tool support to invoke Performix on a remote target. This server integrates into common coding assistants and can provide Arm tool access and performance insights to LLM-based coding assistants. Follow the [install guide](https://learn.arm.com/install-guides/github-copilot/) to install the MCP server with Docker.
+The Arm Model Context Protocol (MCP) server has direct tool support to invoke Performix on a remote target. This server integrates into common coding assistants and can provide Arm tool access and performance insights to LLM-based coding assistants. The code samples below are for connecting to OpenAI's codex solution, please see the instructions for [your preferred coding assistant](https://learn.arm.com/learning-paths/servers-and-cloud-computing/arm-mcp-server/1-overview/).
 
 {{% notice Please Note %}}
+
+You need an OpenAI account to use the Codex CLI.
+
+{{% /notice  %}}
+
+```bash
+docker pull armlimited/arm-mcp:latest
+```
+add the following to your `~/.codex/config.toml` file
+
 
 To ensure the MCP server can invoke `performix` on remote machines, pass the optional Docker arguments for your SSH private key and known hosts file. For example, this is the TOML format for the Codex CLI.
 
@@ -37,10 +47,6 @@ args = [
   "armlimited/arm-mcp"
 ]
 ```
-
-Please see [the Arm MCP documentation](https://github.com/arm/mcp) to connect to your preferred coding assistant.
-
-{{% /notice  %}}
 
 You can then ask your coding assistant to run the `memory access` recipe, interpret the results, and inspect the relevant source code. The prompt can include the remote target, workload binary, and source directory:
 
@@ -75,6 +81,10 @@ void update_positions(ParticlesSoA& p, int n, float dt) {
 ```
 
 This removes the `Particle*` indirection and improves cache-line utilization because the hot loop streams through the data it actually uses.
+
+As the graphic below shows, the baseline implementation is on the right, even though each particle is mapped to padded to a 64 Byte cache line, many of the member variables in the struct are not read or written to, hence they are 'cold'. However, by using a structure of arrays all the particles are owned by a single struct but only the data which is touched is loaded into a cache line hence we are not wastefully loading data. 
+
+![](./data_layout_comparison_compressed.gif)
 
 ## Measure wall time and memory usage directly
 

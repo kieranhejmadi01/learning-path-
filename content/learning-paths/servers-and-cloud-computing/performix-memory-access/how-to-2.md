@@ -10,6 +10,12 @@ layout: learningpathall
 
 Start by inspecting the baseline particle model in `src/baseline/particle.hpp`.
 
+{{% notice Hint %}}
+
+If you are using an IDE or Editor with an LLM-based coding assistant, use the `AGENT.md` file to augment your learning experience. This file provides context about the repository and helps direct the agent to be a helpful learning assistant.
+
+{{% /notice %}}
+
 The baseline implementation stores every property for one particle in a single structure:
 
 ```cpp
@@ -59,7 +65,7 @@ Configure the recipe to launch the baseline workload on your remote Arm target:
 - Set **Workload** to the baseline executable:
 
 ```output
-/home/ubuntu/memory-access/Arm-Total-Performance/build/baseline
+<path to build directory>/baseline
 ```
 
 Keep the default profiling duration so Performix records until the workload exits.
