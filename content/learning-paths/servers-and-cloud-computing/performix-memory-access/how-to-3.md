@@ -8,7 +8,7 @@ layout: learningpathall
 
 ## Optimize Manually
 
-Using the data collected from Performix, refactor the `Particle` data structure to improve the L1 cache hit rate. The baseline result showed that `update_positions()` dominated the samples, had low L1 cache hit rate, and did not suffer from significant TLB walks.
+The `src/users_solution/` directory is a copy of the `src/baseline` directory which you can edit. Using the data collected from Performix, refactor the `particle` data structure and associated function signature / call sites to improve the L1 cache hit rate. The baseline result showed that `update_positions()` dominated the samples, had low L1 cache hit rate, and did not suffer from significant TLB walks.
 
 {{% notice Hint %}}
 
@@ -16,9 +16,18 @@ Consider how the `Particle` data structure maps to a 64-byte cache line. Also co
 
 {{% /notice %}}
 
-### (Optional) Optimize with an agent and the Arm MCP server
+Once you have made changes in the `src/users_solution/` directory. You can rebuild the binary with the following commands.
 
-The Arm Model Context Protocol (MCP) server has direct tool support to invoke Performix on a remote target. This server integrates into common coding assistants and can provide Arm tool access and performance insights to LLM-based coding assistants. The code samples below are for connecting to OpenAI's codex solution, please see the instructions for [your preferred coding assistant](https://learn.arm.com/learning-paths/servers-and-cloud-computing/arm-mcp-server/1-overview/).
+```bash
+cd <build dir>
+make clean
+cmake --build . --parallel
+```
+Use the Performix GUI to assess and changes in performance for the `<path to build dir>/users_solution` binary. A reference solution is available in the `src/optimized` directory.
+
+### (Optional) Optimize with an AI agent and the Arm MCP server
+
+Alternatively, if you have access to a code assistant such as Kiro, Gemini, Codex or GitHub copilot. The Arm Model Context Protocol (MCP) server has direct tool support to invoke Performix on a remote target. This server integrates into MCP compatible coding assistants and can provide performance insights to LLM-based coding assistants to create a useful feedback loop. The code samples below are for connecting to OpenAI's codex solution, please see the instructions for [your preferred coding assistant](https://learn.arm.com/learning-paths/servers-and-cloud-computing/arm-mcp-server/1-overview/).
 
 {{% notice Please Note %}}
 
@@ -26,13 +35,13 @@ You need an OpenAI account to use the Codex CLI.
 
 {{% /notice  %}}
 
+[Install docker](https://learn.arm.com/install-guides/docker/) and pull the MCP server image. 
+
 ```bash
 docker pull armlimited/arm-mcp:latest
 ```
-add the following to your `~/.codex/config.toml` file
 
-
-To ensure the MCP server can invoke `performix` on remote machines, pass the optional Docker arguments for your SSH private key and known hosts file. For example, this is the TOML format for the Codex CLI.
+To ensure the MCP server can invoke `performix` on remote machines, pass the optional Docker arguments for your SSH private key and known hosts file. For example, this is the TOML format for the Codex CLI. Add the following to your `~/.codex/config.toml` file: 
 
 ```output
 [mcp_servers.arm-mcp]
@@ -48,13 +57,13 @@ args = [
 ]
 ```
 
-You can then ask your coding assistant to run the `memory access` recipe, interpret the results, and inspect the relevant source code. The prompt can include the remote target, workload binary, and source directory:
+Restart codex and ask your coding assistant to run the `memory access` recipe, interpret the results, and inspect the relevant source code. The prompt can include the remote target, workload binary, and source directory:
 
 ![Codex prompt asking the Arm MCP server to run the memory access and code hotspot recipes on the remote baseline workload. alt-text#center](./codex_prompt.png "Prompting Codex to analyze the baseline workload with Arm MCP")
 
 ## Review the optimized solution
 
-One solution is available in the `src/optimized` directory. The baseline stores a vector of `Particle*` values, where each `Particle` is allocated separately and contains all particle fields in one 64-byte structure. The hot loop only needs `x`, `y`, `z`, `vx`, `vy`, and `vz`, but the baseline layout still steps through whole particle objects and performs unnecessary pointer chasing.
+A reference solution is available in the `src/optimized` directory. The baseline stores a vector of `Particle*` values, where each `Particle` is allocated separately and contains all particle fields in one 64-byte structure. The hot loop only needs `x`, `y`, `z`, `vx`, `vy`, and `vz`, but the baseline layout still steps through whole particle objects and performs unnecessary pointer chasing.
 
 The optimized version changes the layout to a Struct of Arrays (SoA). Each field is stored in its own contiguous `std::vector<float>`:
 
@@ -86,7 +95,15 @@ As the graphic below shows, the baseline implementation is on the right, even th
 
 ![](./data_layout_comparison_compressed.gif)
 
-## Measure wall time and memory usage directly
+## Confirm with Performix
+
+After optimization, rerun the Performix Memory Access recipe on the optimized binary. In the Performix GUI, click rerun the recipe and replace the path to the binary from `<path to build dir>/baseline` to `<path to build dir>/optimized`.
+
+![Performix Memory Access results for the optimized binary showing 100 percent L1C load hits for the selected optimized function and lower L1C average latency. alt-text#center](./performix_after_optimization.png "Memory access results after the Struct of Arrays optimization")
+
+The optimized result shows much stronger L1 cache behavior. The hot update path now has `100%` L1C loads in the captured result and a lower average L1C latency than the baseline. This confirms that the data layout change improved locality, not just wall-clock time.
+
+## Measure wall time and memory usage
 
 Run the binaries directly on the remote machine without Performix to compare both wall time and memory usage:
 
@@ -95,7 +112,7 @@ Run the binaries directly on the remote machine without Performix to compare bot
 /usr/bin/time -v <path to build directory>/optimized
 ```
 
-Please note that we have instrumented the hot loop with the `scopedTimer` so we can directly observe the speed up from the change. 
+We have also instrumented the hot loop with the `scopedTimer` so we can directly observe the speed up from the change. 
 
 ```output
 Baseline took 571 milliseconds
@@ -129,15 +146,15 @@ Optimized took 279 milliseconds
         Minor (reclaiming a frame) page faults: 15500
 ```
 
-In this run, the baseline took 571 ms and the optimized version took 279 ms, which is about a 2.0x speedup and a wall-time reduction of about 51%. The maximum resident set size also dropped from 92,720 KB to 64,044 KB, a reduction of about 31%. This reduction in RSS is because the optimized Struct of Arrays layout eliminates per-object allocation overhead and stores only the fields actually needed in contiguous memory.
 
-## Confirm with Performix
+| Metric                | Baseline      | Optimized     | Explanation                                                                                 |
+|-----------------------|--------------|--------------|---------------------------------------------------------------------------------------------|
+| Wall time (ms)        | 571          | 279          | Optimized layout improves cache usage and eliminates pointer chasing, halving runtime.       |
+| Max RSS (KB)          | 92,720       | 64,044       | Struct of Arrays reduces memory footprint by removing per-object overhead and cold fields.   |
+| Minor page faults     | 22,655       | 15,500       | Fewer pages are touched due to more compact, contiguous storage of only needed data fields.  |
+| L1 cache hit rate (%) | 66.3         | 99.3         | Hot data is now accessed in a cache-friendly pattern, maximizing L1 cache effectiveness.      |
+| L1 avg latency (cycles)| 26.2         | 11.7         | Each cache hit takes fewer cycles as we have no pointer chasing   |
 
-After optimization, rerun the Performix Memory Access recipe on the optimized binary.
-
-![Performix Memory Access results for the optimized binary showing 100 percent L1C load hits for the selected optimized function and lower L1C average latency. alt-text#center](./performix_after_optimization.png "Memory access results after the Struct of Arrays optimization")
-
-The optimized result shows much stronger L1 cache behavior. The hot update path now has `100%` L1C loads in the captured result and a lower average L1C latency than the baseline. This confirms that the data layout change improved locality, not just wall-clock time.
 
 ## Summary
 

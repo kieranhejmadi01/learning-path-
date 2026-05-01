@@ -10,9 +10,11 @@ layout: learningpathall
 
 Start by inspecting the baseline particle model in `src/baseline/particle.hpp`.
 
-{{% notice Hint %}}
+{{% notice Tip %}}
 
-If you are using an IDE or Editor with an LLM-based coding assistant, use the `AGENT.md` file to augment your learning experience. This file provides context about the repository and helps direct the agent to be a helpful learning assistant.
+If you are using an IDE or Editor with an LLM-based coding assistant, the `AGENT.md` file automatically augments your learning experience. This file provides context about the repository and helps direct the agent to be a helpful learning assistant.
+
+![agent.md file#center](./agent_screen_shot.png)
 
 {{% /notice %}}
 

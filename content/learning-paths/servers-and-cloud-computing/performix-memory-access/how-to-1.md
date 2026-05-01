@@ -8,12 +8,11 @@ layout: learningpathall
 
 ## Install required packages and clone the repository
 
-Use your remote Arm Linux target for all build and run steps.
+Use your remote Arm Linux target for all build and run steps. For this example, I am using a `c7g.metal` instance running `Ubuntu 24.04 LTS`.
 
 ## Install Arm Performix
 
-Install and configure Arm Performix using the [install guide](https://learn.arm.com/install-guides/performix/). You will need access to a `metal` instance. For this example, I am using a `c7g.metal` instance running `Ubuntu 24.04 LTS`. Additionally, you will need to have the Arm Statistical Profiling Extension (SPE) enabled. 
-
+Install and configure Arm Performix using the [install guide](https://learn.arm.com/install-guides/performix/) on a Neoverse-based Arm system with no hypervisor, for example a `metal` instance. 
 
 Install the required system packages:
 
@@ -23,7 +22,7 @@ sudo apt install -y git cmake build-essential python3 python3-venv python3-pip
 ```
 {{% notice Please Note %}}
 
-If you are running on an **AWS Ubuntu 24.04 LTS image**, as per this learning path, you will also need to enable SPE with the following command. Please see the [enable SPE learning path](https://github.com/ArmDeveloperEcosystem/arm-learning-paths/pull/3186) if you are running on an alternative platform.
+If you are also running on an **AWS Ubuntu 24.04 LTS image**, you will also need to enable SPE with the following command. If you are running on an alternative platform, please see the [enable SPE learning path](https://github.com/ArmDeveloperEcosystem/arm-learning-paths/pull/3186) 
 
 ```bash
 sudo apt install -y linux-modules-extra-$(uname -r)
@@ -34,7 +33,7 @@ sudo modprobe arm_spe_pmu
 Clone the example:
 
 ```bash
-git clone --branch v1.0 https://github.com/arm-education/Orbiting-Galaxy-Example.git
+git clone --branch v1.0.2 https://github.com/arm-education/Orbiting-Galaxy-Example.git
 cd Orbiting-Galaxy-Example
 ```
 
