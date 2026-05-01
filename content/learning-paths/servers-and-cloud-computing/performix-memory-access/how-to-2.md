@@ -12,9 +12,9 @@ Start by inspecting the baseline particle model in `src/baseline/particle.hpp`.
 
 {{% notice Tip %}}
 
-If you are using an IDE or Editor with an LLM-based coding assistant, the `AGENT.md` file automatically augments your learning experience. This file provides context about the repository and helps direct the agent to be a helpful learning assistant.
+If you are using an IDE or editor with an LLM-based coding assistant, the `AGENT.md` file can improve your learning experience. This file provides repository context and helps guide the agent to give more useful assistance.
 
-![agent.md file#center](./agent_screen_shot.png)
+![Screenshot showing the AGENT.md file in the repository, highlighting the context file your coding assistant uses to provide more relevant guidance during this task.#center](./agent_screen_shot.png)
 
 {{% /notice %}}
 
@@ -72,13 +72,13 @@ Configure the recipe to launch the baseline workload on your remote Arm target:
 
 Keep the default profiling duration so Performix records until the workload exits.
 
-![Performix Memory Access recipe setup with the remote Arm target ready and the workload path field configured. alt-text#center](./setup.png "Configure the Performix Memory Access recipe")
+![Performix Memory Access recipe setup showing the selected remote Arm target and the workload path field populated with the baseline binary, which confirms the run configuration before profiling starts.#center](./setup.png "Configure the Performix Memory Access recipe")
 
 Start the recipe and wait for the results to load.
 
 ## Assess Performance
 
-![Performix Memory Access results for the baseline binary showing update_positions with about 66 percent L1C load hits and about 26 cycle L1C average latency. alt-text#center](./performix_before_optimizations.png "Baseline memory access results before optimization")
+![Performix Memory Access results for the baseline binary showing update_positions with about 66 percent L1C load hits and around 26-cycle average L1C latency, indicating weak cache locality in the hot path.#center](./performix_before_optimizations.png "Baseline memory access results before optimization")
 
 Look at the memory access results for the baseline binary. Most samples are associated with the `update_positions()` function. The `L1C % Loads` value shows that only about two thirds of loads hit in L1 cache, and the average L1 cache load latency is about 26 cycles. A cache-friendly hot loop should have a much higher L1 hit rate and lower average latency.
 
@@ -92,6 +92,6 @@ In summary:
 
 Double-click the `update_positions()` row to open the source code view. The source view shows that the samples concentrate on the per-particle position updates.
 
-![Performix source code view for update_positions showing samples on the x, y, and z position update statements. alt-text#center](./source_code.png "Baseline source-level samples in update_positions")
+![Performix source code view for update_positions showing sample concentration on the x, y, and z update statements, helping you confirm that this loop is the main optimization target.#center](./source_code.png "Baseline source-level samples in update_positions")
 
 The result points to a data-layout problem rather than a page-translation problem. In the next section, you use that evidence to guide an optimization.
