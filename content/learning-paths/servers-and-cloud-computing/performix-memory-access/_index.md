@@ -64,9 +64,3 @@ weight: 1                       # _index.md always has weight of 1 to order corr
 layout: "learningpathall"       # All files under learning paths have this same wrapper
 learning_path_main_page: "yes"  # This should be surfaced when looking for related content. Only set for _index.md of learning path content.
 ---
-
-Memory-bound code can look computationally simple while still spending most of its time waiting for data. In this Learning Path, you build a C++ particle simulation, inspect the data structure used by the hot loop, and run the Arm Performix Memory Access recipe through the Arm MCP Server.
-
-The workload stores particles for an orbiting galaxies simulation. You use it to connect memory hierarchy concepts to source code: how cache line use, pointer indirection, TLB behavior, and page walks can affect runtime even when each loop iteration performs only a few arithmetic operations.
-
-You start with manual Linux inspection techniques such as `perf`, then use Arm MCP to run the Performix Memory Access recipe on a remote Arm target. Stop after collecting the first memory access profile so you can assess the results before applying improvements.
