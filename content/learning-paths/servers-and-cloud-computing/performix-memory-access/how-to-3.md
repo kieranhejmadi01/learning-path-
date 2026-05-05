@@ -25,7 +25,7 @@ cmake --build . --parallel
 ```
 Use the Performix GUI to assess performance changes for the `<path to build dir>/users_solution` binary. A reference solution is available in `src/optimized`.
 
-### (Optional) Optimize with an AI agent and the Arm MCP server
+## (Optional) Optimize with an AI agent and the Arm MCP server
 
 If you have access to a code assistant such as Kiro, Gemini, Codex, or GitHub Copilot, you can also use the Arm Model Context Protocol (MCP) server. The MCP server includes direct tool support to invoke Performix on a remote target. It integrates with MCP-compatible coding assistants and can provide performance insights to create a useful feedback loop. The code samples below show how to connect to OpenAI Codex; for other tools, see [your preferred coding assistant](https://learn.arm.com/learning-paths/servers-and-cloud-computing/arm-mcp-server/1-overview/).
 
@@ -60,6 +60,8 @@ args = [
 Restart Codex and ask your coding assistant to run the `memory access` recipe, interpret the results, and inspect the relevant source code. Your prompt can include the remote target, workload binary, and source directory:
 
 ![Codex prompt requesting the Arm MCP server to run memory access and code hotspot recipes on the remote baseline workload, showing how to pass target, binary path, and source directory details.#center](./codex_prompt.png "Prompting Codex to analyze the baseline workload with Arm MCP")
+
+Alternatively, you can use the curated [arm-full-optimization.md](https://github.com/arm/mcp/blob/main/agent-integrations/codex/arm-full-optimization.md) prompt file.
 
 ## Review the optimized solution
 
@@ -160,4 +162,4 @@ Optimized took 279 milliseconds
 
 In this Learning Path, you used Performix and the Arm MCP Server to identify a memory access bottleneck in a C++ particle simulation. You connected the profile data to source code, found that the hot loop suffered from poor data layout and unnecessary pointer chasing, and improved the implementation with a Struct of Arrays layout. You then validated the change with direct wall-time measurements and a second Performix run.
 
-You can use the same MCP server and the `performix` tool to continue through Performix recipes in an iterative optimization cycle with the [arm-full-optimization.md](https://github.com/arm/mcp/blob/main/agent-integrations/codex/arm-full-optimization.md) prompt file. This approach combines measurement tools, code context, and focused prompts to iterate on real bottlenecks.
+This approach combines measurement tools, code context, and focused prompts to iterate on real bottlenecks.

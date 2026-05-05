@@ -19,19 +19,19 @@ You typically see:
 - Last-level cache, often shared across multiple cores, and usually taking 20+ cycles.
 - DRAM, which is much larger but much slower than on-chip cache.
 
-You can inspect cache topology on a Linux system with:
-
-```bash
-lscpu | grep -i cache
-```
-
-Example output:
+You can inspect cache topology on a Linux system with Arm's [sysreport](https://learn.arm.com/learning-paths/servers-and-cloud-computing/sysreport/) tool or the `lscpu` command. Unlike `lscpu`, Sysreport also reports the set associativity for each cache level. For example, you can run the following command on a system with `git` and `python` installed:
 
 ```output
-L1d cache:                               4 MiB (64 instances)
-L1i cache:                               4 MiB (64 instances)
-L2 cache:                                64 MiB (64 instances)
-L3 cache:                                32 MiB (1 instance)
+git clone https://github.com/ArmDeveloperEcosystem/sysreport.git
+python3 src/sysreport.py | grep -i cache -A 4
+
+  cache info:          size, associativity, sharing
+  cache line size:     64
+  Caches:
+    64 x L1D 64K 4-way 64b-line
+    64 x L1I 64K 4-way 64b-line
+    64 x L2U 1M 8-way 64b-line
+    1 x L3U 32M 16-way 64b-line
 ```
 
 For a more visual view, install `hwloc` and generate a topology image:
@@ -44,7 +44,7 @@ hwloc-ls --of png > topology.png
 
 ![Hardware locality topology for an Arm server showing per-core L1 and L2 caches and a shared L3 cache across all cores, which helps you verify cache hierarchy before profiling.#center](./topology.png "Example hardware locality topology")
 
-The graphic above illustrates cache tiers on an AWS Graviton3 metal instance based on Neoverse V1. Each of the 64 cores has private `L1d`, `L1i`, and `L2` caches, and all cores share one `L3` cache (last-level cache). Cache sizes, especially at later levels, are not fixed by the Neoverse architecture; implementers such as AWS or Google can configure larger or smaller caches based on design goals.
+The graphic above illustrates cache tiers on an AWS Graviton3 metal instance based on Neoverse V1. Each of the 64 cores has private `L1d`, `L1i`, and `L2` caches, and all cores share one `L3` cache, sometimes referred to as last-level cache (LLC). Cache sizes, especially at later levels, are not fixed by the Neoverse architecture; implementers such as AWS or Google can configure larger or smaller caches based on design goals.
 
 NUMA, or non-uniform memory access, means memory latency can depend on which processor or socket owns the memory being accessed. On this AWS Graviton3 instance, there is only one NUMA node.
 
@@ -66,11 +66,7 @@ A minor page fault is usually harmless: the data is already in RAM, and the kern
 
 The working set is the data your program actively touches during a period of execution. It differs from resident set size (RSS), which is the amount of physical memory currently resident for a process. A process can have a large RSS while the hot loop actively uses only a smaller working set.
 
+### Memory access from a programmers perspective
+
 From a programmer's perspective, much of the cache and memory subsystem is a black box defined by processor architecture and implementation. Features such as cache associativity, prefetching, and translation caching are designed to hide latency across many workloads. Your main software levers are data structure layout, allocation patterns, and choices such as page size. The layout of your C++ data structures can determine whether the memory hierarchy helps or hurts runtime. The compiler generally cannot reorder structure fields or split objects automatically because that would change program semantics.
 
-Common causes of poor memory access behavior include:
-
-- Storing hot fields together with cold fields in a large structure.
-- Allocating many small objects separately on the heap.
-- Storing raw pointers in a container and following one pointer per loop iteration.
-- Touching data with little spatial locality or temporal locality.

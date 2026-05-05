@@ -1,29 +1,28 @@
 ---
-title: Run memory access analysis with Arm Performix and the Arm MCP Server
+title: Get started with memory access analysis with Arm Performix and the Arm MCP Server
 
 description: Learn how to profile memory access behavior in a C++ particle simulation on Arm Linux using the Arm Performix Memory Access recipe through the Arm MCP Server.
 
 minutes_to_complete: 45
 
-who_is_this_for: This is an advanced topic for intermediate C++ developers who want to use Arm Performix and the Arm MCP Server to diagnose cache and translation behavior in applications running on Arm Neoverse systems.
+who_is_this_for: This is an introductory topic for C++ developers who want to use Arm Performix and the Arm MCP Server to diagnose cache and translation behavior in applications running on Arm Neoverse systems.
 
 learning_objectives:
   - Explain how L1 cache hits, TLB misses, and page walks affect C++ application runtime.
   - Build and visualize the orbiting galaxies example on an Arm Linux target.
-  - Inspect a particle data structure for memory access risks before making code changes.
-  - Run the Arm Performix Memory Access recipe through the Arm MCP Server.
+  - Inspect and optimize particle data structure using insights from the memory access recipe
+  - Use the Arm MCP Server in combination with performix for an agentic solution.
 
 prerequisites:
-  - Access to an Arm Neoverse-based Linux server.
-  - Arm Performix installed and configured for the remote target. See the [Arm Performix install guide](https://learn.arm.com/install-guides/performix/).
-  - Arm MCP Server configured in your AI coding assistant.
+  - Access to an Arm Neoverse-based Linux metal instance.
+  - Basic understanding of memory hierarchy within a CPU
   - Basic C++ development experience.
   - Familiarity with the Linux command line.
 
 author: Kieran Hejmadi
 
 ### Tags
-skilllevels: Advanced
+skilllevels: Introductory
 subjects: Performance and Architecture
 armips:
   - Neoverse

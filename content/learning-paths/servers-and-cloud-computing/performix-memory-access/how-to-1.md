@@ -8,13 +8,15 @@ layout: learningpathall
 
 ## Install required packages and clone the repository
 
-Use your remote Arm Linux target for all build and run steps. This example uses a `c7g.metal` instance running `Ubuntu 24.04 LTS`.
+Use your remote Arm Linux target for all build and run steps. This example uses an AWS `c7g.metal` instance running `Ubuntu 24.04 LTS`.
 
 ## Install Arm Performix
 
-Install and configure Arm Performix using the [install guide](https://learn.arm.com/install-guides/performix/) on a Neoverse-based Arm system with no hypervisor, for example a `metal` instance.
+Install and configure Arm Performix using the [install guide](https://learn.arm.com/install-guides/performix/) on both your local machine and the remote Neoverse-based system.
 
-Install the required system packages:
+## Install the required system packages
+
+Run the following command, replacing `apt` with the package manager for your linux distribution.
 
 ```bash
 sudo apt update
@@ -35,7 +37,7 @@ Clone the example:
 ```bash
 git clone https://github.com/arm-education/Orbiting-Galaxy-Example.git
 cd Orbiting-Galaxy-Example
-git checkout -b my-work v1.0.2
+git checkout -b my-work v1.0.3
 ```
 
 ## Build with CMake
