@@ -56,7 +56,7 @@ Compile the applications using the commands shown:
   gcc -march=armv8-a+sve -O3 -fopt-info-vec sve_add.c -o sve_add.exe
   {{< /tab >}}
   {{< tab header="Arm Compiler for Linux" >}}
-  armclang --march=armv8-a+sve -O3 -Rpass=vector sve_add.c -o sve_add.exe
+  armclang -march=armv8-a+sve -O3 -Rpass=vector sve_add.c -o sve_add.exe
   {{< /tab >}}
 {{% /tabpane %}}
 
