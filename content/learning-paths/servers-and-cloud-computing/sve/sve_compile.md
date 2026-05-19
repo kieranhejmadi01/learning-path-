@@ -81,11 +81,13 @@ Neoverse-N1 | `-mcpu=neoverse-n1`
 Neoverse-V1 | `-mcpu=neoverse-v1`
 Neoverse-V2 | `-mcpu=neoverse-v2`
 Neoverse-V3 | `-mcpu=neoverse-v3`
-Arm AGI CPU (first generation)* | `-mcpu=neoverse-v3ae`
+Arm AGI CPU (first generation)* | `-mcpu=neoverse-v3ae` (as of May 2026)
 
 {{% notice Please Note %}}
 
-*The Arm Toolchain for Linux is based on LLVM. Support for the Arm AGI CPU (1st generation), which uses the `Neoverse V3-AE` core, is expected to be introduced in LLVM 23 with an explicit `-mcpu=armagicpu` compiler option.
+*The Arm Toolchain for Linux is based on LLVM. Support for the Arm AGI CPU (1st generation), which uses the `Neoverse V3-AE` core, is expected to be introduced in LLVM 23 with an new `-mcpu=armagicpu` compiler option.
+
+
 
 {{% /notice %}}
 
