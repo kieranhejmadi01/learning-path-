@@ -456,7 +456,7 @@ Run the benchmark on a dataset of 65,536 elements (2^16) with a 0.001% hit rate 
 ./sve2_match_demo $((1<<16)) 10000 0.00001
 ```
 
-The output is similar to:
+The output on the AGI CPU, using the Neoverse V3 build, is similar to:
 
 ```output
 Haystack length : 65536 elements
@@ -464,30 +464,30 @@ Iterations      : 10000
 Hit probability : 0.000010 (0.0010 % )
 
 Average latency over 10000 iterations (ns):
-  generic_u8       : 104956.90
-  sve2_u8          : 1159.93
-  sve2_u8_unrolled : 988.12
-  speed‑up (orig)  : 90.49x
-  speed‑up (unroll): 106.22x
+  generic_u8       : 176900.54
+  sve2_u8          : 1823.45
+  sve2_u8_unrolled : 1490.96
+  speed‑up (orig)  : 97.01x
+  speed‑up (unroll): 118.65x
 
-  generic_u16      : 12506.72
-  sve2_u16         : 3841.89
-  sve2_u16_unrolled: 2997.85
-  speed‑up (orig)  : 3.26x
-  speed‑up (unroll): 4.17x
+  generic_u16      : 35878.13
+  sve2_u16         : 6356.75
+  sve2_u16_unrolled: 5182.28
+  speed‑up (orig)  : 5.64x
+  speed‑up (unroll): 6.92x
 
 Throughput (million items/second):
-  generic_u8       : 624.41 Mi/s
-  sve2_u8          : 56499.74 Mi/s
-  sve2_u8_unrolled : 66323.93 Mi/s
-  speed‑up (orig)  : 90.49x
-  speed‑up (unroll): 106.22x
+  generic_u8       : 370.47 Mi/s
+  sve2_u8          : 35940.72 Mi/s
+  sve2_u8_unrolled : 43955.64 Mi/s
+  speed‑up (orig)  : 97.01x
+  speed‑up (unroll): 118.65x
 
-  generic_u16      : 5240.06 Mi/s
-  sve2_u16         : 17058.25 Mi/s
-  sve2_u16_unrolled: 21860.97 Mi/s
-  speed‑up (orig)  : 3.26x
-  speed‑up (unroll): 4.17x
+  generic_u16      : 1826.63 Mi/s
+  sve2_u16         : 10309.68 Mi/s
+  sve2_u16_unrolled: 12646.17 Mi/s
+  speed‑up (orig)  : 5.64x
+  speed‑up (unroll): 6.92x
 ```
 
 You can experiment with different haystack lengths, iterations and hit probabilities.
@@ -496,83 +496,65 @@ You can experiment with different haystack lengths, iterations and hit probabili
 ./sve2_match_demo [length] [iterations] [hit_prob]
 ```
 
-## Performance Results
+## Performance results on the AGI CPU
 
-When running on an AWS Graviton4 (Neoverse V2) instance, compiled with `gcc 15.2.0` on Ubuntu 24.04 and a dataset of 65,536 elements (2^16), you will see different performance at different hit probabilities, as shown in the following results:
+These measurements use a Neoverse V3-based AGI CPU running Ubuntu 24.04, with a 128-bit SVE vector length. The benchmark is compiled using `-O3 -march=armv9-a+sve2 -mtune=neoverse-v3`.
 
-### Latency (ns per iteration) for Different Hit Rates (8-bit)
+Each run uses 65,536 elements (2^16) and 10,000 iterations. For each hit probability, the latency tables report the median of the average latencies from five separate runs. Speedups are calculated from those median latencies. The example output is from one run, so its values differ from the medians. The runs use the host's existing settings without CPU pinning or host-wide tuning.
 
-| Implementation        | 0% (No Matches) | 0.001% | 0.01% | 0.1% | 1%  |
-|-----------------------|-----------------|--------|-------|------|-----|
-| Generic Scalar        | 210,818         | 101,721 | 23,131 | 2,103 | 216 |
-| SVE2 MATCH            | 2,067           | 1,167  | 374   | 77   | 45  |
-| SVE2 MATCH Unrolled   | 1,741           | 989    | 295   | 74   | 48  |
+Performance on your system will vary with your hardware, compiler version, and build settings. Focus on the relative performance differences between the scalar, SVE2 MATCH, and unrolled implementations rather than the absolute latency values. The size of those relative differences can also vary across systems and compiler versions.
 
-### Latency (ns per iteration) for Different Hit Rates (16-bit)
+### Latency (ns per iteration) at different hit rates (8-bit)
 
-| Implementation        | 0% (No Matches) | 0.001% | 0.01% | 0.1% | 1% |
-|-----------------------|-----------------|--------|-------|------|----|
-| Generic Scalar        | 12,047          | 12,485 | 5,879 | 721  | 44 |
-| SVE2 MATCH            | 3,852           | 3,161  | 1,331 | 199  | 43 |
-| SVE2 MATCH Unrolled   | 2,996           | 2,986  | 1,237 | 178  | 43 |
+| Implementation | 0% (no matches) | 0.001% | 0.01% | 0.1% | 1% |
+|----------------|----------------|--------|-------|------|----|
+| Generic scalar | 358,653.40 | 167,631.05 | 31,495.47 | 3,727.40 | 374.73 |
+| SVE2 MATCH | 3,243.07 | 1,823.76 | 604.74 | 114.09 | 70.60 |
+| SVE2 MATCH unrolled | 2,622.86 | 1,491.06 | 500.27 | 113.19 | 70.32 |
 
-### Speedup vs Generic Scalar (8-bit)
+### Latency (ns per iteration) at different hit rates (16-bit)
 
-| Hit Rate | SVE2 MATCH | SVE2 MATCH Unrolled |
+| Implementation | 0% (no matches) | 0.001% | 0.01% | 0.1% | 1% |
+|----------------|----------------|--------|-------|------|----|
+| Generic scalar | 35,880.21 | 35,880.19 | 14,574.54 | 1,692.74 | 57.34 |
+| SVE2 MATCH | 6,325.59 | 6,511.51 | 2,613.57 | 347.77 | 65.36 |
+| SVE2 MATCH unrolled | 5,184.61 | 5,183.31 | 2,157.04 | 295.15 | 64.84 |
+
+### Speedup versus generic scalar (8-bit)
+
+| Hit rate | SVE2 MATCH | SVE2 MATCH unrolled |
 |----------|------------|---------------------|
-| 0%       | 101.98x    | 121.09x             |
-| 0.001%   | 87.19x     | 102.85x             |
-| 0.01%    | 61.85x     | 78.47x              |
-| 0.1%     | 27.28x     | 28.45x              |
-| 1%       | 4.82x      | 4.55x               |
+| 0% | 110.59x | 136.74x |
+| 0.001% | 91.92x | 112.42x |
+| 0.01% | 52.08x | 62.96x |
+| 0.1% | 32.67x | 32.93x |
+| 1% | 5.31x | 5.33x |
 
-### Speedup vs Generic Scalar (16-bit)
+### Speedup versus generic scalar (16-bit)
 
-| Hit Rate | SVE2 MATCH | SVE2 MATCH Unrolled |
+| Hit rate | SVE2 MATCH | SVE2 MATCH unrolled |
 |----------|------------|---------------------|
-| 0%       | 3.13x      | 4.02x               |
-| 0.001%   | 3.95x      | 4.18x               |
-| 0.01%    | 4.42x      | 4.75x               |
-| 0.1%     | 3.63x      | 4.05x               |
-| 1%       | 1.02x      | 1.01x               |
+| 0% | 5.67x | 6.92x |
+| 0.001% | 5.51x | 6.92x |
+| 0.01% | 5.58x | 6.76x |
+| 0.1% | 4.87x | 5.74x |
+| 1% | 0.88x | 0.88x |
 
+### Impact of hit rate on performance
 
-### Impact of Hit Rate on Performance
-The benchmark results reveal several important insights about the performance characteristics of SVE2 MATCH instructions. The most striking observation is how the performance advantage of SVE2 MATCH varies with the hit rate:
+For 8-bit data, SVE2 MATCH provides its largest speedups when matches are rare. At 0%–0.001% hit probabilities, the two vectorized implementations are about 92–137x faster than scalar. This falls to about 52–63x at 0.01%, 33x at 0.1%, and 5.3x at 1%.
 
-##### **Very Low Hit Rates (0% - 0.001%)**: 
-   - For 8-bit data, the SVE2 MATCH implementations achieve an 87-121x speedup
-   - For 16-bit data, the speedup ranges from about 3.1x to 4.2x
-   - This is where SVE2 MATCH truly shines, as it can quickly process large chunks of data with few or no matches
+For 16-bit data, the speedup is about 5.5–6.9x at 0%–0.001%, 5.6–6.8x at 0.01%, and 4.9–5.7x at 0.1%. At 1%, both SVE2 implementations are slower than scalar: their speedup is 0.88x, corresponding to about 13–14% higher latency. Frequent matches shorten the scan, reducing the benefit of vector processing relative to setup and timing overhead.
 
-##### **Low Hit Rates (0.01%)**: 
-   - The 8-bit implementations are about 62-78x faster than the generic scalar implementation
-   - The 16-bit implementations are about 4.4-4.8x faster
+The hit probabilities describe data generation, not guaranteed match counts. With the fixed random seeds, the 16-bit array contains no matches at both 0% and 0.001%, so both cases scan the full array. The small latency differences between these cases reflect run variation. The basic 16-bit SVE2 implementation also varies more across repeated runs at these probabilities than the unrolled implementation.
 
-##### **Medium Hit Rates (0.1%)**: 
-   - The 8-bit implementations retain a speedup of about 27-28x
-   - The 16-bit implementations remain about 3.6-4.1x faster than the generic scalar implementation
+Each run repeatedly searches the same generated arrays and stops at the first match. The printed throughput divides the full array length by elapsed time, even when the search terminates early. For nonzero hit probabilities, interpret it as a nominal array-length rate, not the number of elements actually inspected per second. Use latency to compare these early-exit searches.
 
-##### **High Hit Rates (1%)**: 
-   - The 8-bit implementations remain about 4.6-4.8x faster than the generic scalar implementation
-   - The 16-bit implementations perform about the same as the generic scalar implementation
-   - With frequent matches, early termination reduces the benefit of processing multiple elements at once
+### Benefits of loop unrolling
 
-##### **Summary**
-This pattern makes SVE2 MATCH particularly well-suited for applications where matches are rare but important to find, such as:
-- Searching for specific patterns in large datasets
-- Filtering operations with high selectivity
-- Security applications looking for specific signatures
+Unrolling improves the median latency for both element sizes from 0% through 0.1% hit probability, although the 8-bit gain at 0.1% is less than 1%. In the no-match case, unrolling increases the speedup from 110.59x to 136.74x for 8-bit data and from 5.67x to 6.92x for 16-bit data.
 
-### Benefits of Loop Unrolling
-
-The unrolled implementation consistently outperforms the basic SVE2 MATCH implementation:
-
-* **Very Low Hit Rates**: Improves the 0% case from 101.98x to 121.09x for 8-bit and from 3.13x to 4.02x for 16-bit
-* **Low and Medium Hit Rates**: Improves performance for both element sizes, with the largest gains in the 8-bit 0.01% case
-* **High Hit Rates**: Performs similarly for 16-bit data and is slightly slower than the basic SVE2 MATCH implementation for 8-bit data
-
-This demonstrates that loop unrolling and prefetching are most useful when the scan processes large portions of the array before finding a match.
+At 1%, the basic and unrolled versions differ by less than 1 ns for both element sizes. Treat them as effectively tied at this measurement scale; both 16-bit versions remain slower than scalar. These results support using unrolling for longer scans, but do not establish a benefit for every hit rate or isolate the contribution of prefetching.
 
 ### Applications of SVE2 MATCH
 
